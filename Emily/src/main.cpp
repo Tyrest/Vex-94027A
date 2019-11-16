@@ -86,6 +86,17 @@ void usercontrol( void ) {
     RightMotor1.spin(vex::directionType::fwd, Controller1.Axis2.position(), vex::velocityUnits::pct);
     RightMotor2.spin(vex::directionType::fwd, Controller1.Axis2.position(), vex::velocityUnits::pct);
     */
+    double leftMotorSpeed = 0;
+    double rightMotorSpeed = 0;
+
+    leftMotorSpeed += Controller1.Axis4.position();
+    leftMotorSpeed += Controller1.Axis3.position();
+
+    rightMotorSpeed -= Controller1.Axis4.position();
+    rightMotorSpeed += Controller1.Axis3.position();
+
+    LeftMotor1.spin(vex::directionType::fwd, leftMotorSpeed, vex::velocityUnits::pct);
+    RightMotor1.spin(vex::directionType::fwd, rightMotorSpeed, vex::velocityUnits::pct);
 
     rampMotor.spin(vex::directionType::fwd, Controller1.Axis1.position()/10, vex::velocityUnits::pct);
 
