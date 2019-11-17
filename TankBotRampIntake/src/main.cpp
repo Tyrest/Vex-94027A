@@ -78,6 +78,16 @@ void pre_auton( void ) {
 /*  You must modify the code to add your own robot specific commands here.   */
 /*---------------------------------------------------------------------------*/
 
+static void goResetRotation()
+{
+  LeftMotorA.resetRotation();
+  LeftMotorB.resetRotation();
+  RightMotorA.resetRotation();
+  RightMotorB.resetRotation();
+  IntakeA.resetRotation();
+  IntakeB.resetRotation();
+}
+
 static void stopDriveBase()
 {
   LeftMotorA.stop();
@@ -87,33 +97,55 @@ static void stopDriveBase()
 }
 
 // if you want to go backwards, use negative speed
-static void goForward(int speed, int howLong)
+static void goForward(double speed, double rotations)
 {
+  goResetRotation();
   LeftMotorA.spin(vex::directionType::fwd, speed, vex::velocityUnits::pct);
-  RightMotorA.spin(vex::directionType::fwd, speed, vex::velocityUnits::pct);
   LeftMotorB.spin(vex::directionType::fwd, speed, vex::velocityUnits::pct);
+  RightMotorA.spin(vex::directionType::fwd, speed, vex::velocityUnits::pct);
   RightMotorB.spin(vex::directionType::fwd, speed, vex::velocityUnits::pct);
-  vex::task::sleep(howLong);
+  waitUntil(LeftMotorA.rotation(vex::rotationUnits::rev) >= rotations);
+  stopDriveBase();
 }
 
-static void turnRight(int speed, int howLong)
+// static void turnRight(double speed, double rotations)
+// {
+//   goResetRotation();
+//   LeftMotorA.spin(vex::directionType::fwd, speed, vex::velocityUnits::pct);
+//   LeftMotorB.spin(vex::directionType::fwd, speed, vex::velocityUnits::pct);
+//   RightMotorA.spin(vex::directionType::fwd, -speed, vex::velocityUnits::pct);
+//   RightMotorB.spin(vex::directionType::fwd, -speed, vex::velocityUnits::pct);
+//   waitUntil(LeftMotorA.rotation(vex::rotationUnits::rev) >= rotations);
+//   stopDriveBase();
+// }
+
+static void turnLeft(double speed, double rotations)
 {
-  stopDriveBase();
-  RightMotorA.spin(vex::directionType::fwd, speed, vex::velocityUnits::pct);
-  RightMotorB.spin(vex::directionType::fwd, speed, vex::velocityUnits::pct);
+  goResetRotation();
   LeftMotorA.spin(vex::directionType::fwd, -speed, vex::velocityUnits::pct);
   LeftMotorB.spin(vex::directionType::fwd, -speed, vex::velocityUnits::pct);
-  vex::task::sleep(howLong);
+  RightMotorA.spin(vex::directionType::fwd, speed, vex::velocityUnits::pct);
+  RightMotorB.spin(vex::directionType::fwd, speed, vex::velocityUnits::pct);
+  waitUntil(RightMotorA.rotation(vex::rotationUnits::rev) >= rotations);
+  stopDriveBase();
 }
 
-static void turnLeft(int speed, int howLong)
+static void spinIntake(double speed, double rotations)
 {
-  stopDriveBase();
-  LeftMotorA.spin(vex::directionType::fwd, speed, vex::velocityUnits::pct);
-  LeftMotorB.spin(vex::directionType::fwd, speed, vex::velocityUnits::pct);
-  RightMotorA.spin(vex::directionType::fwd, -speed, vex::velocityUnits::pct);
-  RightMotorB.spin(vex::directionType::fwd, -speed, vex::velocityUnits::pct);
-  vex::task::sleep(howLong);
+  goResetRotation();
+  IntakeA.spin(vex::directionType::fwd, speed, vex::velocityUnits::pct);
+  IntakeB.spin(vex::directionType::fwd, speed, vex::velocityUnits::pct);
+  waitUntil(IntakeA.rotation(vex::rotationUnits::rev) >= rotations);
+  IntakeA.stop();
+  IntakeB.stop();
+}
+
+static void spinRamp(int direction)
+{
+  goResetRotation();
+  rampMotor.spin(vex::directionType::fwd, 20 * direction, vex::velocityUnits::pct);
+  waitUntil(rampMotor.rotation(vex::rotationUnits::deg) >= 90);
+  rampMotor.stop();
 }
 
 void autonomous( void ) {
@@ -163,14 +195,20 @@ void usercontrol( void ) {
       */
 
       // actually start doing stuff
-      IntakeA.spin(vex::directionType::fwd, 100, vex::velocityUnits::pct);
-      IntakeB.spin(vex::directionType::fwd, 100, vex::velocityUnits::pct);
-      goForward(20, 4000);
-      turnRight(20, 1700);
-      goForward(20, 3200);
+      UpDown.spin(vex::directionType::rev, 10, vex::velocityUnits::pct);
+      spinIntake(100, 20.0);
+      goForward(20, 2.5);
+      UpDown.stop();
+      turnLeft(20, 1.15);
+      goForward(20, 2.0);
+      spinIntake(-20, 0.25);
+      spinRamp(1);
+      goForward(10, 0.1);
       IntakeA.spin(vex::directionType::fwd, -20, vex::velocityUnits::pct);
       IntakeB.spin(vex::directionType::fwd, -20, vex::velocityUnits::pct);
-      vex::task::sleep(3000);
+      goForward(-20, 1.5);
+      IntakeA.stop();
+      IntakeB.stop();
 
       stopDriveBase();
     }
