@@ -3,6 +3,10 @@ Tank Control
 
 This program instructs your robot to use remote control values to move the robot. 
 
+
+note: ClawMotor and Left/Right Motor names have been changed in the program
+added leftIntake and rightIntake
+added two more left and right motors 
 ```
 Robot Configuration: 
 [Smart Port]    [Name]        [Type]           [Description]       [Reversed]
