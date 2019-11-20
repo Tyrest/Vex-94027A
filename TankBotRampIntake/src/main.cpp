@@ -86,6 +86,7 @@ static void goResetRotation()
   RightMotorB.resetRotation();
   IntakeA.resetRotation();
   IntakeB.resetRotation();
+  rampMotor.resetRotation();
 }
 
 static void stopDriveBase()
@@ -144,7 +145,7 @@ static void spinRamp(int direction)
 {
   goResetRotation();
   rampMotor.spin(vex::directionType::fwd, 20 * direction, vex::velocityUnits::pct);
-  waitUntil(fabs(rampMotor.rotation(vex::rotationUnits::deg)) >= 90);
+  waitUntil(fabs(rampMotor.rotation(vex::rotationUnits::rev)) >= 3.5);
   rampMotor.stop();
 }
 
@@ -195,21 +196,31 @@ void usercontrol( void ) {
       */
 
       // actually start doing stuff
+      UpDown.spin(vex::directionType::fwd, 100, vex::velocityUnits::pct);
+      wait(0.5, vex::timeUnits::sec);
       UpDown.spin(vex::directionType::rev, 10, vex::velocityUnits::pct);
-      IntakeA.spin(vex::directionType::fwd, 100, vex::velocityUnits::pct);
-      IntakeB.spin(vex::directionType::fwd, 100, vex::velocityUnits::pct);
-      goForward(20, 2.5);
-      UpDown.stop();
-      turnLeft(20, 1.15);
-      goForward(20, 2.0);
-      spinIntake(-20, 0.25);
-      spinRamp(1);
-      goForward(10, 0.1);
-      IntakeA.spin(vex::directionType::rev, 10, vex::velocityUnits::pct);
-      IntakeB.spin(vex::directionType::rev, 10, vex::velocityUnits::pct);
-      goForward(-20, 1.5);
+      IntakeA.spin(vex::directionType::rev, 100, vex::velocityUnits::pct);
+      IntakeB.spin(vex::directionType::rev, 100, vex::velocityUnits::pct);
+      wait(2, vex::timeUnits::sec);
+      spinRamp(5);
       IntakeA.stop();
       IntakeB.stop();
+      spinRamp(-5);
+      IntakeA.spin(vex::directionType::fwd, 100, vex::velocityUnits::pct);
+      IntakeB.spin(vex::directionType::fwd, 100, vex::velocityUnits::pct);
+      wait(2, vex::timeUnits::sec);
+      // goForward(20, 2.5);
+      // UpDown.stop();
+      // turnLeft(20, 1.15);
+      // goForward(20, 2.0);
+      // spinIntake(-20, 0.25);
+      // spinRamp(1);
+      // goForward(10, 0.1);
+      // IntakeA.spin(vex::directionType::rev, 10, vex::velocityUnits::pct);
+      // IntakeB.spin(vex::directionType::rev, 10, vex::velocityUnits::pct);
+      // goForward(-20, 1.5);
+      // IntakeA.stop();
+      // IntakeB.stop();
 
       stopDriveBase();
     }
