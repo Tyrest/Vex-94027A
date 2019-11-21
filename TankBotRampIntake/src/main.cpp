@@ -209,18 +209,18 @@ void usercontrol( void ) {
       IntakeA.spin(vex::directionType::fwd, 100, vex::velocityUnits::pct);
       IntakeB.spin(vex::directionType::fwd, 100, vex::velocityUnits::pct);
       wait(2, vex::timeUnits::sec);
-      // goForward(20, 2.5);
-      // UpDown.stop();
-      // turnLeft(20, 1.15);
-      // goForward(20, 2.0);
-      // spinIntake(-20, 0.25);
-      // spinRamp(1);
-      // goForward(10, 0.1);
-      // IntakeA.spin(vex::directionType::rev, 10, vex::velocityUnits::pct);
-      // IntakeB.spin(vex::directionType::rev, 10, vex::velocityUnits::pct);
-      // goForward(-20, 1.5);
-      // IntakeA.stop();
-      // IntakeB.stop();
+      goForward(20, 2.5);
+      UpDown.stop();
+      turnLeft(20, 1.15);
+      goForward(20, 2.0);
+      spinIntake(-20, 0.25);
+      spinRamp(1);
+      goForward(10, 0.5);
+      IntakeA.spin(vex::directionType::rev, 30, vex::velocityUnits::pct);
+      IntakeB.spin(vex::directionType::rev, 30, vex::velocityUnits::pct);
+      goForward(-20, 1.5);
+      IntakeA.stop();
+      IntakeB.stop();
 
       stopDriveBase();
     }
