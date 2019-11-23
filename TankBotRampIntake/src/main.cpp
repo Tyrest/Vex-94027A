@@ -153,11 +153,11 @@ void autonomous( void ) {
   // ..........................................................................
   // Insert autonomous user code here.
   // ..........................................................................
-  UpDown.spin(vex::directionType::fwd, 100, vex::velocityUnits::pct);
-  vex::task::sleep(500);
-  UpDown.spin(vex::directionType::rev, 100, vex::velocityUnits::pct);
-  vex::task::sleep(500);
-  UpDown.stop();
+  // UpDown.spin(vex::directionType::fwd, 100, vex::velocityUnits::pct);
+  // vex::task::sleep(500);
+  // UpDown.spin(vex::directionType::rev, 100, vex::velocityUnits::pct);
+  // vex::task::sleep(500);
+  // UpDown.stop();
 }
 
 /*---------------------------------------------------------------------------*/
@@ -195,7 +195,7 @@ void usercontrol( void ) {
       UpDown.stop();
       */
 
-      // actually start doing stuff
+      // Deploy Stuff
       UpDown.spin(vex::directionType::fwd, 100, vex::velocityUnits::pct);
       wait(0.5, vex::timeUnits::sec);
       UpDown.spin(vex::directionType::rev, 10, vex::velocityUnits::pct);
@@ -209,16 +209,30 @@ void usercontrol( void ) {
       IntakeA.spin(vex::directionType::fwd, 100, vex::velocityUnits::pct);
       IntakeB.spin(vex::directionType::fwd, 100, vex::velocityUnits::pct);
       wait(2, vex::timeUnits::sec);
-      goForward(20, 2.5);
+
+      // Pick Up Blocks
+      goForward(20, 3.0);
       UpDown.stop();
-      turnLeft(20, 1.15);
-      goForward(20, 2.0);
+      turnLeft(20, 1.2);
+      goForward(20, 2.4);
       spinIntake(-20, 0.25);
       spinRamp(1);
-      goForward(10, 0.5);
+      goForward(10, 0.2);
       IntakeA.spin(vex::directionType::rev, 30, vex::velocityUnits::pct);
       IntakeB.spin(vex::directionType::rev, 30, vex::velocityUnits::pct);
       goForward(-20, 1.5);
+      IntakeA.stop();
+      IntakeB.stop();
+
+      // Stack Blocks
+      goForward(-10, 0.3);
+      spinIntake(-20, 3);
+      spinIntake(20, 1);
+      spinRamp(1);
+      // goForward(10, 0.1);
+      IntakeA.spin(vex::directionType::rev, 30, vex::velocityUnits::pct);
+      IntakeB.spin(vex::directionType::rev, 30, vex::velocityUnits::pct);
+      goForward(-10, 1.5);
       IntakeA.stop();
       IntakeB.stop();
 
@@ -293,7 +307,7 @@ void usercontrol( void ) {
     }
     else if (Controller1.ButtonB.pressing())
     {
-      rampMotor.spin(vex::directionType::rev, 20, vex::velocityUnits::pct);
+      rampMotor.spin(vex::directionType::rev, 40, vex::velocityUnits::pct);
     }
     else
     {
