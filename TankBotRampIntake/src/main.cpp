@@ -40,13 +40,12 @@ vex::competition Competition;
 // define your global instances of motors and other devices here
 
 vex::controller Controller1 = vex::controller();
-vex::motor LeftMotorA       = vex::motor( vex::PORT1, true );
-vex::motor LeftMotorB       = vex::motor( vex::PORT2 );
-vex::motor RightMotorA      = vex::motor( vex::PORT11 );
-vex::motor RightMotorB      = vex::motor( vex::PORT12, true );
+vex::motor LeftMotor        = vex::motor( vex::PORT1 );
+vex::motor RightMotor       = vex::motor( vex::PORT11, true );
 vex::motor IntakeA          = vex::motor( vex::PORT3);
 vex::motor IntakeB          = vex::motor( vex::PORT4, true );
-vex::motor UpDown           = vex::motor( vex::PORT9 );
+vex::motor UpDownA          = vex::motor( vex::PORT9 );
+vex::motor UpDownB          = vex::motor( vex::PORT10, true );
 vex::motor rampMotor        = vex::motor( vex::PORT5 );
 double speedMult = 1;
 
@@ -80,32 +79,28 @@ void pre_auton( void ) {
 
 static void goResetRotation()
 {
-  LeftMotorA.resetRotation();
-  LeftMotorB.resetRotation();
-  RightMotorA.resetRotation();
-  RightMotorB.resetRotation();
+  LeftMotor.resetRotation();
+  RightMotor.resetRotation();
   IntakeA.resetRotation();
   IntakeB.resetRotation();
+  UpDownA.resetRotation();
+  UpDownB.resetRotation();
   rampMotor.resetRotation();
 }
 
 static void stopDriveBase()
 {
-  LeftMotorA.stop();
-  LeftMotorB.stop();
-  RightMotorA.stop();
-  RightMotorB.stop();
+  LeftMotor.stop();
+  RightMotor.stop();
 }
 
 // if you want to go backwards, use negative speed
 static void goForward(double speed, double rotations)
 {
   goResetRotation();
-  LeftMotorA.spin(vex::directionType::fwd, speed, vex::velocityUnits::pct);
-  LeftMotorB.spin(vex::directionType::fwd, speed, vex::velocityUnits::pct);
-  RightMotorA.spin(vex::directionType::fwd, speed, vex::velocityUnits::pct);
-  RightMotorB.spin(vex::directionType::fwd, speed, vex::velocityUnits::pct);
-  waitUntil(fabs(LeftMotorA.rotation(vex::rotationUnits::rev)) >= rotations);
+  LeftMotor.spin(vex::directionType::fwd, speed, vex::velocityUnits::pct);
+  RightMotor.spin(vex::directionType::fwd, speed, vex::velocityUnits::pct);
+  waitUntil(fabs(LeftMotor.rotation(vex::rotationUnits::rev)) >= rotations || fabs(RightMotor.rotation(vex::rotationUnits::rev)) >= rotations);
   stopDriveBase();
 }
 
@@ -123,11 +118,9 @@ static void goForward(double speed, double rotations)
 static void turnLeft(double speed, double rotations)
 {
   goResetRotation();
-  LeftMotorA.spin(vex::directionType::fwd, -speed, vex::velocityUnits::pct);
-  LeftMotorB.spin(vex::directionType::fwd, -speed, vex::velocityUnits::pct);
-  RightMotorA.spin(vex::directionType::fwd, speed, vex::velocityUnits::pct);
-  RightMotorB.spin(vex::directionType::fwd, speed, vex::velocityUnits::pct);
-  waitUntil(fabs(RightMotorA.rotation(vex::rotationUnits::rev)) >= rotations);
+  LeftMotor.spin(vex::directionType::fwd, -speed, vex::velocityUnits::pct);
+  RightMotor.spin(vex::directionType::fwd, speed, vex::velocityUnits::pct);
+  waitUntil(fabs(LeftMotor.rotation(vex::rotationUnits::rev)) >= rotations || fabs(RightMotor.rotation(vex::rotationUnits::rev)) >= rotations);
   stopDriveBase();
 }
 
@@ -136,7 +129,7 @@ static void spinIntake(double speed, double rotations)
   goResetRotation();
   IntakeA.spin(vex::directionType::fwd, speed, vex::velocityUnits::pct);
   IntakeB.spin(vex::directionType::fwd, speed, vex::velocityUnits::pct);
-  waitUntil(fabs(IntakeA.rotation(vex::rotationUnits::rev)) >= rotations);
+  waitUntil(fabs(IntakeA.rotation(vex::rotationUnits::rev)) >= rotations || fabs(IntakeB.rotation(vex::rotationUnits::rev)) >= rotations);
   IntakeA.stop();
   IntakeB.stop();
 }
@@ -195,48 +188,48 @@ void usercontrol( void ) {
       UpDown.stop();
       */
 
-      // Deploy Stuff
-      UpDown.spin(vex::directionType::fwd, 100, vex::velocityUnits::pct);
-      wait(0.5, vex::timeUnits::sec);
-      UpDown.spin(vex::directionType::rev, 10, vex::velocityUnits::pct);
-      IntakeA.spin(vex::directionType::rev, 100, vex::velocityUnits::pct);
-      IntakeB.spin(vex::directionType::rev, 100, vex::velocityUnits::pct);
-      wait(2, vex::timeUnits::sec);
-      spinRamp(5);
-      IntakeA.stop();
-      IntakeB.stop();
-      spinRamp(-5);
-      IntakeA.spin(vex::directionType::fwd, 100, vex::velocityUnits::pct);
-      IntakeB.spin(vex::directionType::fwd, 100, vex::velocityUnits::pct);
-      wait(2, vex::timeUnits::sec);
+      // // Deploy Stuff
+      // UpDown.spin(vex::directionType::fwd, 100, vex::velocityUnits::pct);
+      // wait(0.5, vex::timeUnits::sec);
+      // UpDown.spin(vex::directionType::rev, 10, vex::velocityUnits::pct);
+      // IntakeA.spin(vex::directionType::rev, 100, vex::velocityUnits::pct);
+      // IntakeB.spin(vex::directionType::rev, 100, vex::velocityUnits::pct);
+      // wait(2, vex::timeUnits::sec);
+      // spinRamp(5);
+      // IntakeA.stop();
+      // IntakeB.stop();
+      // spinRamp(-5);
+      // IntakeA.spin(vex::directionType::fwd, 100, vex::velocityUnits::pct);
+      // IntakeB.spin(vex::directionType::fwd, 100, vex::velocityUnits::pct);
+      // wait(2, vex::timeUnits::sec);
 
-      // Pick Up Blocks
-      goForward(20, 3.0);
-      UpDown.stop();
-      turnLeft(20, 1.2);
-      goForward(20, 2.4);
-      spinIntake(-20, 0.25);
-      spinRamp(1);
-      goForward(10, 0.2);
-      IntakeA.spin(vex::directionType::rev, 30, vex::velocityUnits::pct);
-      IntakeB.spin(vex::directionType::rev, 30, vex::velocityUnits::pct);
-      goForward(-20, 1.5);
-      IntakeA.stop();
-      IntakeB.stop();
+      // // Pick Up Blocks
+      // goForward(20, 3.0);
+      // UpDown.stop();
+      // turnLeft(20, 1.2);
+      // goForward(20, 2.4);
+      // spinIntake(-20, 0.25);
+      // spinRamp(1);
+      // goForward(10, 0.2);
+      // IntakeA.spin(vex::directionType::rev, 30, vex::velocityUnits::pct);
+      // IntakeB.spin(vex::directionType::rev, 30, vex::velocityUnits::pct);
+      // goForward(-20, 1.5);
+      // IntakeA.stop();
+      // IntakeB.stop();
 
-      // Stack Blocks
-      goForward(-10, 0.3);
-      spinIntake(-20, 3);
-      spinIntake(20, 1);
-      spinRamp(1);
-      // goForward(10, 0.1);
-      IntakeA.spin(vex::directionType::rev, 30, vex::velocityUnits::pct);
-      IntakeB.spin(vex::directionType::rev, 30, vex::velocityUnits::pct);
-      goForward(-10, 1.5);
-      IntakeA.stop();
-      IntakeB.stop();
+      // // Stack Blocks
+      // goForward(-10, 0.3);
+      // spinIntake(-20, 3);
+      // spinIntake(20, 1);
+      // spinRamp(1);
+      // // goForward(10, 0.1);
+      // IntakeA.spin(vex::directionType::rev, 30, vex::velocityUnits::pct);
+      // IntakeB.spin(vex::directionType::rev, 30, vex::velocityUnits::pct);
+      // goForward(-10, 1.5);
+      // IntakeA.stop();
+      // IntakeB.stop();
 
-      stopDriveBase();
+      // stopDriveBase();
     }
 
 
@@ -260,10 +253,8 @@ void usercontrol( void ) {
 
     //Drive Control
     //Set the left and right motor to spin forward using the controller's Axis positions as the velocity value.
-    LeftMotorA.spin(vex::directionType::fwd, Controller1.Axis3.position() * speedMult, vex::velocityUnits::pct);
-    LeftMotorB.spin(vex::directionType::fwd, Controller1.Axis3.position() * speedMult, vex::velocityUnits::pct);
-    RightMotorA.spin(vex::directionType::fwd, Controller1.Axis2.position() * speedMult, vex::velocityUnits::pct);
-    RightMotorB.spin(vex::directionType::fwd, Controller1.Axis2.position() * speedMult, vex::velocityUnits::pct);
+    LeftMotor.spin(vex::directionType::fwd, Controller1.Axis3.position() * speedMult, vex::velocityUnits::pct);
+    RightMotor.spin(vex::directionType::fwd, Controller1.Axis2.position() * speedMult, vex::velocityUnits::pct);
 
     // Intake Control
     // If the R1 button is pressed...
@@ -289,16 +280,19 @@ void usercontrol( void ) {
     //THIS IS INTAKE
     if(Controller1.ButtonL1.pressing()) { 
       //...Spin the claw motor forward.
-      UpDown.spin(vex::directionType::fwd, 100, vex::velocityUnits::pct);
+      UpDownA.spin(vex::directionType::fwd, 100, vex::velocityUnits::pct);
+      UpDownB.spin(vex::directionType::fwd, 100, vex::velocityUnits::pct);
     }
     else if(Controller1.ButtonL2.pressing())
     {
-      UpDown.spin(vex::directionType::rev, 20, vex::velocityUnits::pct);
+      UpDownA.spin(vex::directionType::rev, 20, vex::velocityUnits::pct);
+      UpDownB.spin(vex::directionType::rev, 20, vex::velocityUnits::pct);
     }
     // else R1 is not pressed....
     else {
       //...Stop the motor.
-      UpDown.stop();
+      UpDownA.stop();
+      UpDownB.stop();
     }
 
     if (Controller1.ButtonA.pressing())
