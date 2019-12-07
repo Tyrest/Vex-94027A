@@ -46,7 +46,8 @@ vex::motor IntakeA          = vex::motor( vex::PORT3);
 vex::motor IntakeB          = vex::motor( vex::PORT4, true );
 vex::motor UpDownA          = vex::motor( vex::PORT9 );
 vex::motor UpDownB          = vex::motor( vex::PORT10, true );
-vex::motor rampMotor        = vex::motor( vex::PORT5 );
+vex::motor rampMotorA       = vex::motor( vex::PORT5 );
+vex::motor rampMotorB       = vex::motor( vex::PORT6, true );
 double speedMult = 1;
 
 bool buttonPressedLast = false;
@@ -85,7 +86,8 @@ static void goResetRotation()
   IntakeB.resetRotation();
   UpDownA.resetRotation();
   UpDownB.resetRotation();
-  rampMotor.resetRotation();
+  rampMotorA.resetRotation();
+  rampMotorB.resetRotation();
 }
 
 static void stopDriveBase()
@@ -137,9 +139,11 @@ static void spinIntake(double speed, double rotations)
 static void spinRamp(int direction)
 {
   goResetRotation();
-  rampMotor.spin(vex::directionType::fwd, 20 * direction, vex::velocityUnits::pct);
-  waitUntil(fabs(rampMotor.rotation(vex::rotationUnits::rev)) >= 3.5);
-  rampMotor.stop();
+  rampMotorA.spin(vex::directionType::fwd, 20 * direction, vex::velocityUnits::pct);
+  rampMotorB.spin(vex::directionType::fwd, 20 * direction, vex::velocityUnits::pct);
+  waitUntil(fabs(rampMotorA.rotation(vex::rotationUnits::rev)) >= 4 || fabs(rampMotorB.rotation(vex::rotationUnits::rev)) >= 3.5);
+  rampMotorA.stop();
+  rampMotorB.stop();
 }
 
 void autonomous( void ) {
@@ -232,7 +236,6 @@ void usercontrol( void ) {
       // stopDriveBase();
     }
 
-
     if (Controller1.ButtonX.pressing() && !buttonPressedLast)
     {
       buttonPressedLast = true;
@@ -249,7 +252,6 @@ void usercontrol( void ) {
     {
       buttonPressedLast = false;
     }
-
 
     //Drive Control
     //Set the left and right motor to spin forward using the controller's Axis positions as the velocity value.
@@ -297,15 +299,18 @@ void usercontrol( void ) {
 
     if (Controller1.ButtonA.pressing())
     {
-      rampMotor.spin(vex::directionType::fwd, 20, vex::velocityUnits::pct);
+      rampMotorA.spin(vex::directionType::fwd, 25, vex::velocityUnits::pct);
+      rampMotorB.spin(vex::directionType::fwd, 25, vex::velocityUnits::pct);
     }
     else if (Controller1.ButtonB.pressing())
     {
-      rampMotor.spin(vex::directionType::rev, 40, vex::velocityUnits::pct);
+      rampMotorA.spin(vex::directionType::rev, 100, vex::velocityUnits::pct);
+      rampMotorB.spin(vex::directionType::rev, 100, vex::velocityUnits::pct);
     }
     else
     {
-      rampMotor.stop();
+      rampMotorA.stop();
+      rampMotorB.stop();
     }
 
     vex::task::sleep(20); //Sleep the task for a short amount of time to prevent wasted resources. 
