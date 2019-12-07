@@ -17,8 +17,10 @@
 // ---- END VEXCODE CONFIGURED DEVICES ----
 
 #include "vex.h"
-
-using namespace vex;
+#include <iostream>
+#include <string>
+#include <stdio.h>
+#include <stdlib.h>
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
@@ -40,113 +42,76 @@ vex::competition Competition;
 // define your global instances of motors and other devices here
 
 vex::controller Controller1 = vex::controller();
-vex::motor LeftMotor        = vex::motor( vex::PORT1 );
-vex::motor RightMotor       = vex::motor( vex::PORT11, true );
-vex::motor IntakeA          = vex::motor( vex::PORT3);
-vex::motor IntakeB          = vex::motor( vex::PORT4, true );
-vex::motor UpDownA          = vex::motor( vex::PORT9 );
-vex::motor UpDownB          = vex::motor( vex::PORT10, true );
-vex::motor rampMotorA       = vex::motor( vex::PORT5 );
-vex::motor rampMotorB       = vex::motor( vex::PORT6, true );
-double speedMult = 1;
+vex::motor DriveL           = vex::motor( vex::PORT11 );
+vex::motor DriveR           = vex::motor( vex::PORT12, true );
+vex::motor IntakeL          = vex::motor( vex::PORT3);
+vex::motor IntakeR          = vex::motor( vex::PORT4, true );
+vex::motor ArmL             = vex::motor( vex::PORT7 );
+vex::motor ArmR             = vex::motor( vex::PORT8, true );
+vex::motor LiftL            = vex::motor( vex::PORT15 );
+vex::motor LiftR            = vex::motor( vex::PORT16, true );
 
-bool buttonPressedLast = false;
+const double upRightRampDegrees = 360;
 
-/*---------------------------------------------------------------------------*/
-/*                          Pre-Autonomous Functions                         */
-/*                                                                           */
-/*  You may want to perform some actions before the competition starts.      */
-/*  Do them in the following function.  You must return from this function   */
-/*  or the autonomous and usercontrol tasks will not be started.  This       */
-/*  function is only called once after the cortex has been powered on and    */ 
-/*  not every time that the robot is disabled.                               */
-/*---------------------------------------------------------------------------*/
+double speedMult = 0.8;
 
-void pre_auton( void ) {
-  // All activities that occur before the competition starts
-  // Example: clearing encoders, setting servo positions, ...
-  
+void pre_auton( void )
+{
+  DriveL.resetRotation();
+  DriveR.resetRotation();
+  IntakeL.resetRotation();
+  IntakeR.resetRotation();
+  ArmL.resetRotation();
+  ArmR.resetRotation();
+  LiftL.resetRotation();
+  LiftR.resetRotation();
 }
-
-/*---------------------------------------------------------------------------*/
-/*                                                                           */
-/*                              Autonomous Task                              */
-/*                                                                           */
-/*  This task is used to control your robot during the autonomous phase of   */
-/*  a VEX Competition.                                                       */
-/*                                                                           */
-/*  You must modify the code to add your own robot specific commands here.   */
-/*---------------------------------------------------------------------------*/
 
 static void goResetRotation()
 {
-  LeftMotor.resetRotation();
-  RightMotor.resetRotation();
-  IntakeA.resetRotation();
-  IntakeB.resetRotation();
-  UpDownA.resetRotation();
-  UpDownB.resetRotation();
-  rampMotorA.resetRotation();
-  rampMotorB.resetRotation();
+  DriveL.resetRotation();
+  DriveR.resetRotation();
+  IntakeL.resetRotation();
+  IntakeR.resetRotation();
+  ArmL.resetRotation();
+  ArmR.resetRotation();
 }
 
-static void stopDriveBase()
-{
-  LeftMotor.stop();
-  RightMotor.stop();
-}
-
-// if you want to go backwards, use negative speed
+// Negative speed for backwards
 static void goForward(double speed, double rotations)
 {
   goResetRotation();
-  LeftMotor.spin(vex::directionType::fwd, speed, vex::velocityUnits::pct);
-  RightMotor.spin(vex::directionType::fwd, speed, vex::velocityUnits::pct);
-  waitUntil(fabs(LeftMotor.rotation(vex::rotationUnits::rev)) >= rotations || fabs(RightMotor.rotation(vex::rotationUnits::rev)) >= rotations);
-  stopDriveBase();
+  DriveL.spin(vex::directionType::fwd, speed, vex::velocityUnits::pct);
+  DriveR.spin(vex::directionType::fwd, speed, vex::velocityUnits::pct);
+  waitUntil(fabs(DriveL.rotation(vex::rotationUnits::rev)) >= rotations || fabs(DriveR.rotation(vex::rotationUnits::rev)) >= rotations);
+  DriveL.stop();
+  DriveR.stop();
 }
 
-// static void turnRight(double speed, double rotations)
-// {
-//   goResetRotation();
-//   LeftMotorA.spin(vex::directionType::fwd, speed, vex::velocityUnits::pct);
-//   LeftMotorB.spin(vex::directionType::fwd, speed, vex::velocityUnits::pct);
-//   RightMotorA.spin(vex::directionType::fwd, -speed, vex::velocityUnits::pct);
-//   RightMotorB.spin(vex::directionType::fwd, -speed, vex::velocityUnits::pct);
-//   waitUntil(LeftMotorA.rotation(vex::rotationUnits::rev) >= rotations);
-//   stopDriveBase();
-// }
-
-static void turnLeft(double speed, double rotations)
+// Positive speed for ccw and negative speed for cw
+static void pivotTurn(double speed, double rotations)
 {
   goResetRotation();
-  LeftMotor.spin(vex::directionType::fwd, -speed, vex::velocityUnits::pct);
-  RightMotor.spin(vex::directionType::fwd, speed, vex::velocityUnits::pct);
-  waitUntil(fabs(LeftMotor.rotation(vex::rotationUnits::rev)) >= rotations || fabs(RightMotor.rotation(vex::rotationUnits::rev)) >= rotations);
-  stopDriveBase();
+  DriveR.spin(vex::directionType::fwd, speed, vex::velocityUnits::pct);
+  DriveL.spin(vex::directionType::fwd, -speed, vex::velocityUnits::pct);
+  waitUntil(fabs(DriveL.rotation(vex::rotationUnits::rev)) >= rotations || fabs(DriveR.rotation(vex::rotationUnits::rev)) >= rotations);
+  DriveL.stop();
+  DriveR.stop();
 }
 
+// Positive speed for intake and negative speed for outturn
 static void spinIntake(double speed, double rotations)
 {
   goResetRotation();
-  IntakeA.spin(vex::directionType::fwd, speed, vex::velocityUnits::pct);
-  IntakeB.spin(vex::directionType::fwd, speed, vex::velocityUnits::pct);
-  waitUntil(fabs(IntakeA.rotation(vex::rotationUnits::rev)) >= rotations || fabs(IntakeB.rotation(vex::rotationUnits::rev)) >= rotations);
-  IntakeA.stop();
-  IntakeB.stop();
+  IntakeL.spin(vex::directionType::fwd, speed, vex::velocityUnits::pct);
+  IntakeR.spin(vex::directionType::fwd, speed, vex::velocityUnits::pct);
+  waitUntil(fabs(IntakeL.rotation(vex::rotationUnits::rev)) >= rotations || fabs(IntakeR.rotation(vex::rotationUnits::rev)) >= rotations);
+  IntakeL.stop();
+  IntakeR.stop();
 }
 
-static void spinRamp(int direction)
+void autonomous( void )
 {
-  goResetRotation();
-  rampMotorA.spin(vex::directionType::fwd, 20 * direction, vex::velocityUnits::pct);
-  rampMotorB.spin(vex::directionType::fwd, 20 * direction, vex::velocityUnits::pct);
-  waitUntil(fabs(rampMotorA.rotation(vex::rotationUnits::rev)) >= 4 || fabs(rampMotorB.rotation(vex::rotationUnits::rev)) >= 3.5);
-  rampMotorA.stop();
-  rampMotorB.stop();
-}
-
-void autonomous( void ) {
   // ..........................................................................
   // Insert autonomous user code here.
   // ..........................................................................
@@ -155,173 +120,181 @@ void autonomous( void ) {
   // UpDown.spin(vex::directionType::rev, 100, vex::velocityUnits::pct);
   // vex::task::sleep(500);
   // UpDown.stop();
+
+  // // Deploy Stuff
+  // UpDown.spin(vex::directionType::fwd, 100, vex::velocityUnits::pct);
+  // wait(0.5, vex::timeUnits::sec);
+  // UpDown.spin(vex::directionType::rev, 10, vex::velocityUnits::pct);
+  // IntakeL.spin(vex::directionType::rev, 100, vex::velocityUnits::pct);
+  // IntakeR.spin(vex::directionType::rev, 100, vex::velocityUnits::pct);
+  // wait(2, vex::timeUnits::sec);
+  // spinRamp(5);
+  // IntakeL.stop();
+  // IntakeR.stop();
+  // spinRamp(-5);
+  // IntakeL.spin(vex::directionType::fwd, 100, vex::velocityUnits::pct);
+  // IntakeR.spin(vex::directionType::fwd, 100, vex::velocityUnits::pct);
+  // wait(2, vex::timeUnits::sec);
+
+  // // Pick Up Blocks
+  // goForward(20, 3.0);
+  // UpDown.stop();
+  // turnLeft(20, 1.2);
+  // goForward(20, 2.4);
+  // spinIntake(-20, 0.25);
+  // spinRamp(1);
+  // goForward(10, 0.2);
+  // IntakeL.spin(vex::directionType::rev, 30, vex::velocityUnits::pct);
+  // IntakeR.spin(vex::directionType::rev, 30, vex::velocityUnits::pct);
+  // goForward(-20, 1.5);
+  // IntakeL.stop();
+  // IntakeR.stop();
+
+  // // Stack Blocks
+  // goForward(-10, 0.3);
+  // spinIntake(-20, 3);
+  // spinIntake(20, 1);
+  // spinRamp(1);
+  // // goForward(10, 0.1);
+  // IntakeL.spin(vex::directionType::rev, 30, vex::velocityUnits::pct);
+  // IntakeR.spin(vex::directionType::rev, 30, vex::velocityUnits::pct);
+  // goForward(-10, 1.5);
+  // IntakeL.stop();
+  // IntakeR.stop();
+
+  // stopDriveBase();
 }
 
-/*---------------------------------------------------------------------------*/
-/*                                                                           */
-/*                              User Control Task                            */
-/*                                                                           */
-/*  This task is used to control your robot during the user control phase of */
-/*  a VEX Competition.                                                       */
-/*                                                                           */
-/*  You must modify the code to add your own robot specific commands here.   */
-/*---------------------------------------------------------------------------*/
+// Raise ramp progressively slowly to vertical position
+static void raiseRamp()
+{
+  goResetRotation();
+  while(fabs(IntakeL.rotation(vex::rotationUnits::rev)) < upRightRampDegrees && fabs(IntakeR.rotation(vex::rotationUnits::rev)) < upRightRampDegrees)
+  {
+    LiftL.spin(vex::directionType::fwd, 80 - (LiftL.rotation(vex::rotationUnits::rev) / upRightRampDegrees) * (7 / 10), vex::velocityUnits::pct);
+    LiftR.spin(vex::directionType::fwd, 80 - (LiftR.rotation(vex::rotationUnits::rev) / upRightRampDegrees) * (7 / 10), vex::velocityUnits::pct);
+  }
+  LiftL.stop();
+  LiftR.stop();
+}
 
-void usercontrol( void ) {
-  // User control code here, inside the loop
-  while (1) {
-    // This is the main execution loop for the user control program.
-    // Each time through the loop your program should update motor + servo 
-    // values based on feedback from the joysticks.
-
-    // ........................................................................
-    // Insert user code here. This is where you use the joystick values to 
-    // update your motors, etc.
-    // ........................................................................
-
-    
-
-    if (Controller1.ButtonY.pressing())
-    {
-      //flip out the intake
-      /*
-      UpDown.spin(vex::directionType::fwd, 100, vex::velocityUnits::pct);
-      vex::task::sleep(500);
-      UpDown.spin(vex::directionType::rev, 100, vex::velocityUnits::pct);
-      vex::task::sleep(500);
-      UpDown.stop();
-      */
-
-      // // Deploy Stuff
-      // UpDown.spin(vex::directionType::fwd, 100, vex::velocityUnits::pct);
-      // wait(0.5, vex::timeUnits::sec);
-      // UpDown.spin(vex::directionType::rev, 10, vex::velocityUnits::pct);
-      // IntakeA.spin(vex::directionType::rev, 100, vex::velocityUnits::pct);
-      // IntakeB.spin(vex::directionType::rev, 100, vex::velocityUnits::pct);
-      // wait(2, vex::timeUnits::sec);
-      // spinRamp(5);
-      // IntakeA.stop();
-      // IntakeB.stop();
-      // spinRamp(-5);
-      // IntakeA.spin(vex::directionType::fwd, 100, vex::velocityUnits::pct);
-      // IntakeB.spin(vex::directionType::fwd, 100, vex::velocityUnits::pct);
-      // wait(2, vex::timeUnits::sec);
-
-      // // Pick Up Blocks
-      // goForward(20, 3.0);
-      // UpDown.stop();
-      // turnLeft(20, 1.2);
-      // goForward(20, 2.4);
-      // spinIntake(-20, 0.25);
-      // spinRamp(1);
-      // goForward(10, 0.2);
-      // IntakeA.spin(vex::directionType::rev, 30, vex::velocityUnits::pct);
-      // IntakeB.spin(vex::directionType::rev, 30, vex::velocityUnits::pct);
-      // goForward(-20, 1.5);
-      // IntakeA.stop();
-      // IntakeB.stop();
-
-      // // Stack Blocks
-      // goForward(-10, 0.3);
-      // spinIntake(-20, 3);
-      // spinIntake(20, 1);
-      // spinRamp(1);
-      // // goForward(10, 0.1);
-      // IntakeA.spin(vex::directionType::rev, 30, vex::velocityUnits::pct);
-      // IntakeB.spin(vex::directionType::rev, 30, vex::velocityUnits::pct);
-      // goForward(-10, 1.5);
-      // IntakeA.stop();
-      // IntakeB.stop();
-
-      // stopDriveBase();
-    }
-
-    if (Controller1.ButtonX.pressing() && !buttonPressedLast)
-    {
-      buttonPressedLast = true;
-      if (speedMult == 0.3)
-      {
-        speedMult = 1;
-      }
-      else
-      {
-        speedMult = 0.3;
-      }
-    }
-    else if (!Controller1.ButtonX.pressing())
-    {
-      buttonPressedLast = false;
-    }
-
-    //Drive Control
-    //Set the left and right motor to spin forward using the controller's Axis positions as the velocity value.
-    LeftMotor.spin(vex::directionType::fwd, Controller1.Axis3.position() * speedMult, vex::velocityUnits::pct);
-    RightMotor.spin(vex::directionType::fwd, Controller1.Axis2.position() * speedMult, vex::velocityUnits::pct);
-
-    // Intake Control
-    // If the R1 button is pressed...
-    if(Controller1.ButtonR1.pressing()) { 
-      //...Spin the claw motor forward.
-      IntakeA.spin(vex::directionType::fwd, 100, vex::velocityUnits::pct);
-      IntakeB.spin(vex::directionType::fwd, 100, vex::velocityUnits::pct);
-    }
-    else if(Controller1.ButtonR2.pressing())
-    {
-      IntakeA.spin(vex::directionType::rev, 20, vex::velocityUnits::pct);
-      IntakeB.spin(vex::directionType::rev, 20, vex::velocityUnits::pct);
-    }
-    // else R1 is not pressed....
-    else {
-      //...Stop the motor.
-      IntakeA.stop();
-      IntakeB.stop(); 
-    }
-
-    // Up Down Control
-    // If the L1 button is pressed...
-    //THIS IS INTAKE
-    if(Controller1.ButtonL1.pressing()) { 
-      //...Spin the claw motor forward.
-      UpDownA.spin(vex::directionType::fwd, 100, vex::velocityUnits::pct);
-      UpDownB.spin(vex::directionType::fwd, 100, vex::velocityUnits::pct);
-    }
-    else if(Controller1.ButtonL2.pressing())
-    {
-      UpDownA.spin(vex::directionType::rev, 20, vex::velocityUnits::pct);
-      UpDownB.spin(vex::directionType::rev, 20, vex::velocityUnits::pct);
-    }
-    // else R1 is not pressed....
-    else {
-      //...Stop the motor.
-      UpDownA.stop();
-      UpDownB.stop();
-    }
-
-    if (Controller1.ButtonA.pressing())
-    {
-      rampMotorA.spin(vex::directionType::fwd, 25, vex::velocityUnits::pct);
-      rampMotorB.spin(vex::directionType::fwd, 25, vex::velocityUnits::pct);
-    }
-    else if (Controller1.ButtonB.pressing())
-    {
-      rampMotorA.spin(vex::directionType::rev, 100, vex::velocityUnits::pct);
-      rampMotorB.spin(vex::directionType::rev, 100, vex::velocityUnits::pct);
-    }
-    else
-    {
-      rampMotorA.stop();
-      rampMotorB.stop();
-    }
-
-    vex::task::sleep(20); //Sleep the task for a short amount of time to prevent wasted resources. 
+// Toggle through different speeds for drivebase
+static void stasisMode()
+{
+  if (speedMult == 0.8)
+  {
+    speedMult = 0.3;
+  }
+  else if (speedMult == 0.3)
+  {
+    speedMult = 0.5;
+  }
+  else
+  {
+    speedMult = 0.8;
   }
 }
 
-//
-// Main will set up the competition functions and callbacks.
-//
-int main() {
+// Controls the intake
+static void intakeControl()
+{
+  if(Controller1.ButtonR1.pressing())
+  { 
+    IntakeL.spin(vex::directionType::fwd, 100, vex::velocityUnits::pct);
+    IntakeR.spin(vex::directionType::fwd, 100, vex::velocityUnits::pct);
+  }
+  else if(Controller1.ButtonR2.pressing())
+  {
+    IntakeL.spin(vex::directionType::rev, 20, vex::velocityUnits::pct);
+    IntakeR.spin(vex::directionType::rev, 20, vex::velocityUnits::pct);
+  }
+  else {
+    IntakeL.stop();
+    IntakeR.stop(); 
+  }
+}
+
+// Controls the arms
+static void armControl()
+{
+  if(Controller1.ButtonL1.pressing())
+  { 
+    ArmL.spin(vex::directionType::fwd, 100, vex::velocityUnits::pct);
+    ArmR.spin(vex::directionType::fwd, 100, vex::velocityUnits::pct);
+  }
+  else if(Controller1.ButtonL2.pressing())
+  {
+    ArmL.spin(vex::directionType::rev, 20, vex::velocityUnits::pct);
+    ArmR.spin(vex::directionType::rev, 20, vex::velocityUnits::pct);
+  }
+  else
+  {
+    ArmL.stop();
+    ArmR.stop();
+  }
+}
+
+// Controls the lift
+static void liftControl()
+{
+  if (Controller1.ButtonA.pressing())
+  {
+    LiftL.spin(vex::directionType::fwd, 20, vex::velocityUnits::pct);
+    LiftR.spin(vex::directionType::fwd, 20, vex::velocityUnits::pct);
+  }
+  else if (Controller1.ButtonB.pressing())
+  {
+    LiftL.spin(vex::directionType::rev, 100, vex::velocityUnits::pct);
+    LiftR.spin(vex::directionType::rev, 100, vex::velocityUnits::pct);
+  }
+  else
+  {
+    LiftL.stop();
+    LiftR.stop();
+  }
+}
+
+// Prints and displays stuff on the controller screen
+static void controllerScreen()
+{
+  Controller1.Screen.clearScreen();
+  Controller1.Screen.setCursor(1, 1);
+
+  Controller1.Screen.print("Current Left Lift Motor Angle: ");
+  Controller1.Screen.print(LiftL.rotation(vex::rotationUnits::rev));
+  Controller1.Screen.newLine();
+  Controller1.Screen.print("Current Right Lift Motor Angle: ");
+  Controller1.Screen.print(LiftR.rotation(vex::rotationUnits::rev));
+}
+
+// User Control Loop and Method
+void usercontrol( void )
+{
+  while (1)
+  {
+    // Axis 2 and Axis 3 | Drive Base Control
+    DriveL.spin(vex::directionType::fwd, Controller1.Axis3.position(percent) * speedMult, vex::velocityUnits::pct);
+    DriveR.spin(vex::directionType::fwd, Controller1.Axis2.position(percent) * speedMult, vex::velocityUnits::pct);
+
+    // Control
+    intakeControl();  // R1 and R2 | Intake Control
+    armControl();     // L1 and L2 | Up Down Control
+    liftControl();    // A and B   | Lift Control
+
+    // Macros
+    Controller1.ButtonUp.pressed(raiseRamp);  // Up | Raise ramp to vertical position
+    Controller1.ButtonX.pressed(stasisMode);  // X  | Toggles speed of drive base
+
+    controllerScreen();
+
+    vex::task::sleep(20); // Sleep the task for a short amount of time to prevent wasted resources. 
+  }
+}
+
+int main()
+{
   vexcodeInit();
+
   //Set up callbacks for autonomous and driver control periods.
   Competition.autonomous( autonomous );
   Competition.drivercontrol( usercontrol );
@@ -330,8 +303,8 @@ int main() {
   pre_auton();
       
   //Prevent main from exiting with an infinite loop.                        
-  while(1) {
-    vex::task::sleep(100);//Sleep the task for a short amount of time to prevent wasted resources.
-  }    
-       
+  while(1)
+  {
+    vex::task::sleep(100); // Sleep the task for a short amount of time to prevent wasted resources.
+  }
 }
