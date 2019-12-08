@@ -17,10 +17,6 @@
 // ---- END VEXCODE CONFIGURED DEVICES ----
 
 #include "vex.h"
-#include <iostream>
-#include <string>
-#include <stdio.h>
-#include <stdlib.h>
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
@@ -42,16 +38,18 @@ vex::competition Competition;
 // define your global instances of motors and other devices here
 
 vex::controller Controller1 = vex::controller();
-vex::motor DriveL           = vex::motor( vex::PORT11 );
-vex::motor DriveR           = vex::motor( vex::PORT12, true );
+vex::motor DriveL           = vex::motor( vex::PORT1 );
+vex::motor DriveR           = vex::motor( vex::PORT2, true );
 vex::motor IntakeL          = vex::motor( vex::PORT3);
 vex::motor IntakeR          = vex::motor( vex::PORT4, true );
-vex::motor ArmL             = vex::motor( vex::PORT7 );
-vex::motor ArmR             = vex::motor( vex::PORT8, true );
-vex::motor LiftL            = vex::motor( vex::PORT15 );
-vex::motor LiftR            = vex::motor( vex::PORT16, true );
+vex::motor ArmL             = vex::motor( vex::PORT7, true );
+vex::motor ArmR             = vex::motor( vex::PORT8 );
+vex::motor LiftL            = vex::motor( vex::PORT5 );
+vex::motor LiftR            = vex::motor( vex::PORT6, true );
 
-const double upRightRampDegrees = 360;
+const double upRightRamp = 1;
+double armLPosInt = 0;
+double armRPosInt = 0;
 
 double speedMult = 0.8;
 
@@ -73,6 +71,12 @@ static void goResetRotation()
   DriveR.resetRotation();
   IntakeL.resetRotation();
   IntakeR.resetRotation();
+  //ArmL.resetRotation();
+  //ArmR.resetRotation();
+}
+
+static void resetIntakeRotation()
+{
   ArmL.resetRotation();
   ArmR.resetRotation();
 }
@@ -108,6 +112,29 @@ static void spinIntake(double speed, double rotations)
   waitUntil(fabs(IntakeL.rotation(vex::rotationUnits::rev)) >= rotations || fabs(IntakeR.rotation(vex::rotationUnits::rev)) >= rotations);
   IntakeL.stop();
   IntakeR.stop();
+}
+
+// target in degrees, returns current position, meant to be used within a while loop
+static void runArmMotor(vex::motor mot, double targetDeg, double delayBetweenRuns, double &lastPos)
+{
+  double currentPos = mot.rotation(vex::rotationUnits::deg);
+  // Find position difference
+  double posDiff = targetDeg - currentPos;
+
+  // Find velocity
+  double currentVelocity = (currentPos - lastPos)/delayBetweenRuns; // degrees per time
+
+  // Find final motor power value
+  double posDiffConst = 0.3;
+  double velConst = 0;
+  double MotorVal = posDiffConst * (posDiff) + velConst * (-currentVelocity);
+  Controller1.Screen.print(MotorVal);
+
+  // Spin motor at that value
+  mot.spin(vex::directionType::fwd, MotorVal, vex::velocityUnits::dps); // degrees per sec
+  
+  // updates current position
+  lastPos = currentPos;
 }
 
 void autonomous( void )
@@ -163,16 +190,27 @@ void autonomous( void )
   // IntakeR.stop();
 
   // stopDriveBase();
+
+  // Current goal: 5-stack
+
+  // Deploy intake
+
+  // AFTER deploying intake set arm default position to default
+  resetIntakeRotation();
+
+  // Deploy ramp
+
+  // 
 }
 
 // Raise ramp progressively slowly to vertical position
 static void raiseRamp()
 {
   goResetRotation();
-  while(fabs(IntakeL.rotation(vex::rotationUnits::rev)) < upRightRampDegrees && fabs(IntakeR.rotation(vex::rotationUnits::rev)) < upRightRampDegrees)
+  while(fabs(IntakeL.rotation(vex::rotationUnits::rev)) < upRightRamp && fabs(IntakeR.rotation(vex::rotationUnits::rev)) < upRightRamp)
   {
-    LiftL.spin(vex::directionType::fwd, 80 - (LiftL.rotation(vex::rotationUnits::rev) / upRightRampDegrees) * (7 / 10), vex::velocityUnits::pct);
-    LiftR.spin(vex::directionType::fwd, 80 - (LiftR.rotation(vex::rotationUnits::rev) / upRightRampDegrees) * (7 / 10), vex::velocityUnits::pct);
+    LiftL.spin(vex::directionType::fwd, 80 - (LiftL.rotation(vex::rotationUnits::rev) / upRightRamp) * (7 / 10), vex::velocityUnits::pct);
+    LiftR.spin(vex::directionType::fwd, 80 - (LiftR.rotation(vex::rotationUnits::rev) / upRightRamp) * (7 / 10), vex::velocityUnits::pct);
   }
   LiftL.stop();
   LiftR.stop();
@@ -215,24 +253,30 @@ static void intakeControl()
 }
 
 // Controls the arms
-static void armControl()
+static void armTargetControl(double &target)
 {
   if(Controller1.ButtonL1.pressing())
   { 
-    ArmL.spin(vex::directionType::fwd, 100, vex::velocityUnits::pct);
-    ArmR.spin(vex::directionType::fwd, 100, vex::velocityUnits::pct);
+    //ArmL.spin(vex::directionType::fwd, 100, vex::velocityUnits::pct);
+    //ArmR.spin(vex::directionType::fwd, 100, vex::velocityUnits::pct);
+    target += 1;
   }
   else if(Controller1.ButtonL2.pressing())
   {
-    ArmL.spin(vex::directionType::rev, 20, vex::velocityUnits::pct);
-    ArmR.spin(vex::directionType::rev, 20, vex::velocityUnits::pct);
+    //ArmL.spin(vex::directionType::rev, 20, vex::velocityUnits::pct);
+    //ArmR.spin(vex::directionType::rev, 20, vex::velocityUnits::pct);
+    target -= 1;
   }
+  /*
   else
   {
     ArmL.stop();
     ArmR.stop();
   }
+  */
 }
+
+// 
 
 // Controls the lift
 static void liftControl()
@@ -255,21 +299,29 @@ static void liftControl()
 }
 
 // Prints and displays stuff on the controller screen
-static void controllerScreen()
+static void controllerScreen(double armTarget)
 {
   Controller1.Screen.clearScreen();
   Controller1.Screen.setCursor(1, 1);
 
+  Controller1.Screen.print(armTarget);
+
+  /*
   Controller1.Screen.print("Current Left Lift Motor Angle: ");
   Controller1.Screen.print(LiftL.rotation(vex::rotationUnits::rev));
   Controller1.Screen.newLine();
   Controller1.Screen.print("Current Right Lift Motor Angle: ");
   Controller1.Screen.print(LiftR.rotation(vex::rotationUnits::rev));
+  */
 }
 
 // User Control Loop and Method
 void usercontrol( void )
 {
+  double armTarget = 0;
+  double armPosL = 0;
+  double armPosR = 0;
+  resetIntakeRotation();
   while (1)
   {
     // Axis 2 and Axis 3 | Drive Base Control
@@ -278,14 +330,17 @@ void usercontrol( void )
 
     // Control
     intakeControl();  // R1 and R2 | Intake Control
-    armControl();     // L1 and L2 | Up Down Control
+    armTargetControl(armTarget);     // L1 and L2 | Up Down Control
+    // adjust arms:
+    runArmMotor(ArmL, armTarget, 0.02, armPosL);
+    runArmMotor(ArmR, armTarget, 0.02, armPosR);
     liftControl();    // A and B   | Lift Control
 
     // Macros
     Controller1.ButtonUp.pressed(raiseRamp);  // Up | Raise ramp to vertical position
     Controller1.ButtonX.pressed(stasisMode);  // X  | Toggles speed of drive base
 
-    controllerScreen();
+    controllerScreen(armTarget);
 
     vex::task::sleep(20); // Sleep the task for a short amount of time to prevent wasted resources. 
   }
