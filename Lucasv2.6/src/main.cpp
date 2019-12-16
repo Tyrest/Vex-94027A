@@ -30,8 +30,7 @@ vex::motor LiftL            = vex::motor( vex::PORT5 );
 vex::motor LiftR            = vex::motor( vex::PORT6, true );
 
 const double upRightRamp = 1;
-double armLPosInt = 0;
-double armRPosInt = 0;
+double armTarget = 0;
 
 double speedMult = 0.8;
 
@@ -211,25 +210,44 @@ static void intakeControl()
   }
 }
 
-// Controls the arms
-static void armTargetControl(double &target)
+static void armTargetUp()
 {
-  if(Controller1.ButtonL1.pressing())
-  { 
-    target += 5;
-  }
-  else if(Controller1.ButtonL2.pressing())
+  if (armTarget == 0)
   {
-    target -= 5;
+    armTarget = 360;
+  }
+  else if (armTarget == 360)
+  {
+    armTarget = 540;
   }
 }
 
+static void armTargetDown()
+{
+  if (armTarget == 540)
+  {
+    armTarget = 360;
+  }
+  else if (armTarget == 360)
+  {
+    armTarget = 0;
+  }
+}
+
+// Controls the arms
+static void armTargetControl(double &target)
+{
+  Controller1.ButtonL1.pressed(armTargetUp);
+  Controller1.ButtonL2.pressed(armTargetDown);
+}
+
 // target in degrees, returns current position, meant to be used within a while loop
-static void runArmMotor(vex::motor mot, double targetDeg, double delayBetweenRuns, double &lastPos)
+static void runArmMotor(vex::motor mot, double delayBetweenRuns, double &lastPos)
 {
   double currentPos = mot.rotation(vex::rotationUnits::deg);
   double veloc = (currentPos - lastPos) / delayBetweenRuns;
-  double motorVal = 2 * (currentPos - targetDeg) + 0.5 * (-veloc);
+  double motorVal = 2 * (currentPos - armTarget) + 0.5 * (-veloc);
+
   mot.spin(vex::directionType::rev, motorVal, vex::velocityUnits::dps);
   lastPos = currentPos;
 }
@@ -259,7 +277,6 @@ static void liftControl()
 // User Control Loop and Method
 void usercontrol( void )
 {
-  double armTarget = 0;
   double armPosL = 0;
   double armPosR = 0;
   resetIntakeRotation();
@@ -270,12 +287,13 @@ void usercontrol( void )
     DriveR.spin(vex::directionType::fwd, Controller1.Axis2.position(percent) * speedMult, vex::velocityUnits::pct);
 
     // Control
-    intakeControl();  // R1 and R2 | Intake Control
+    intakeControl();                 // R1 and R2 | Intake Control
     armTargetControl(armTarget);     // L1 and L2 | Up Down Control
+    liftControl();                   // A and B   | Lift Control
+
     // adjust arms:
-    runArmMotor(ArmL, armTarget, 20, armPosL);
-    runArmMotor(ArmR, armTarget, 20, armPosR);
-    liftControl();    // A and B   | Lift Control
+    runArmMotor(ArmL, 20, armPosL);
+    runArmMotor(ArmR, 20, armPosR);
 
     // Macros
     Controller1.ButtonUp.pressed(raiseRamp);  // Up | Raise ramp to vertical position
