@@ -1,5 +1,5 @@
 #include "vex.h"
-#include <sstream>
+#include <string>
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
@@ -33,9 +33,9 @@ vex::motor TrayR            = vex::motor( vex::PORT6, true );
 const double midTowerArm = 1080;
 const double lowTowerArm = 720;
 
-const double fastBase = 1;
-const double medBase = 0.8;
-const double slowBase = 0.3;
+// const double fastBase = 1;
+// const double medBase = 0.8;
+// const double slowBase = 0.3;
 
 double armTarget = 0;
 double speedMult = 1;
@@ -88,8 +88,6 @@ static void deploy()
 
   TrayL.spin(vex::directionType::rev, 50, vex::velocityUnits::pct);
   TrayR.spin(vex::directionType::rev, 50, vex::velocityUnits::pct);
-  // IntakeL.spin(vex::directionType::rev, 50, vex::velocityUnits::pct);
-  // IntakeR.spin(vex::directionType::rev, 50, vex::velocityUnits::pct);
   ArmL.spin(vex::directionType::fwd, 50, vex::velocityUnits::pct);
   ArmR.spin(vex::directionType::fwd, 50, vex::velocityUnits::pct);
   wait(1.5, seconds);
@@ -101,7 +99,6 @@ static void deploy()
   wait(1.5, seconds);
 
   stopEverything();
-  // wait(5, seconds);
 }
 
 // Negative speed for backwards
@@ -187,21 +184,21 @@ void autonomous( void )
 }
 
 // Toggle through different speeds for drivebase
-static void stasisMode()
-{
-  if (speedMult == fastBase)
-  {
-    speedMult = slowBase;
-  }
-  else if (speedMult == slowBase)
-  {
-    speedMult = medBase;
-  }
-  else
-  {
-    speedMult = fastBase;
-  }
-}
+// static void stasisMode()
+// {
+//   if (speedMult == fastBase)
+//   {
+//     speedMult = slowBase;
+//   }
+//   else if (speedMult == slowBase)
+//   {
+//     speedMult = medBase;
+//   }
+//   else
+//   {
+//     speedMult = fastBase;
+//   }
+// }
 
 // Controls the intake
 static void intakeControl()
@@ -272,16 +269,12 @@ static void liftControl(double &trayTarget)
 
 static void controllerScreen(double armTarget, double trayTarget)
 {
-  std::ostringstream armTargetOS;
-  std::ostringstream trayTargetOS;
-  armTargetOS << armTarget;
-  trayTargetOS << trayTarget;
-  std::string armTargetS = armTargetOS.str();
-  std::string trayTargetS = trayTargetOS.str();
-
-  // Controller1.Screen.print(armTargetS);
-  // Controller1.Screen.newLine();
-  // Controller1.Screen.print(trayTargetS);
+  Controller1.Screen.print("Arm Target: ");
+  Controller1.Screen.print(armTarget);
+  Controller1.Screen.newLine();
+  Controller1.Screen.print("Tray Target: ");
+  Controller1.Screen.print(trayTarget);
+  Controller1.Screen.newLine();
 }
 
 // User Control Loop and Method
@@ -314,7 +307,7 @@ void usercontrol( void )
 
     // Macros
     Controller1.ButtonL1.pressed(cycleArmTarget); // L1 | Cycles through the heights the arm can be at
-    Controller1.ButtonX.pressed(stasisMode);      // X  | Toggles speed of drive base
+    // Controller1.ButtonX.pressed(stasisMode);      // X  | Toggles speed of drive base
     if (Controller1.ButtonY.pressing())
     {
       deploy();
