@@ -23,8 +23,8 @@ vex::competition Competition;
 vex::controller Controller1 = vex::controller();
 vex::motor DriveL           = vex::motor( vex::PORT1 );
 vex::motor DriveR           = vex::motor( vex::PORT2, true );
-vex::motor IntakeL          = vex::motor( vex::PORT3);
-vex::motor IntakeR          = vex::motor( vex::PORT4, true );
+vex::motor IntakeL          = vex::motor( vex::PORT3, true );
+vex::motor IntakeR          = vex::motor( vex::PORT4 );
 vex::motor ArmL             = vex::motor( vex::PORT7, true );
 vex::motor ArmR             = vex::motor( vex::PORT8 );
 vex::motor TrayL            = vex::motor( vex::PORT5 );
@@ -39,6 +39,18 @@ const double slowBase = 0.3;
 
 double armTarget = 0;
 double speedMult = 1;
+
+static void stopEverything ()
+{
+  DriveL.stop();
+  DriveR.stop();
+  IntakeL.stop();
+  IntakeR.stop();
+  ArmL.stop();
+  ArmR.stop();
+  TrayL.stop();
+  TrayR.stop();
+}
 
 void pre_auton( void )
 {
@@ -64,6 +76,32 @@ static void resetIntakeRotation()
 {
   ArmL.resetRotation();
   ArmR.resetRotation();
+}
+
+static void deploy()
+{
+  TrayL.spin(vex::directionType::fwd, 50, vex::velocityUnits::pct);
+  TrayR.spin(vex::directionType::fwd, 50, vex::velocityUnits::pct);
+  IntakeL.spin(vex::directionType::rev, 50, vex::velocityUnits::pct);
+  IntakeR.spin(vex::directionType::rev, 50, vex::velocityUnits::pct);
+  wait(1.5, seconds);
+
+  TrayL.spin(vex::directionType::rev, 50, vex::velocityUnits::pct);
+  TrayR.spin(vex::directionType::rev, 50, vex::velocityUnits::pct);
+  // IntakeL.spin(vex::directionType::rev, 50, vex::velocityUnits::pct);
+  // IntakeR.spin(vex::directionType::rev, 50, vex::velocityUnits::pct);
+  ArmL.spin(vex::directionType::fwd, 50, vex::velocityUnits::pct);
+  ArmR.spin(vex::directionType::fwd, 50, vex::velocityUnits::pct);
+  wait(1.5, seconds);
+
+  TrayL.stop(); 
+  TrayR.stop();
+  ArmL.spin(vex::directionType::rev, 50, vex::velocityUnits::pct);
+  ArmR.spin(vex::directionType::rev, 50, vex::velocityUnits::pct);
+  wait(1.5, seconds);
+
+  stopEverything();
+  // wait(5, seconds);
 }
 
 // Negative speed for backwards
@@ -217,11 +255,18 @@ static void liftControl(double &trayTarget)
 {
   if (Controller1.ButtonA.pressing())
   {
-    trayTarget += 5;
+    trayTarget += 10;
+    IntakeL.spin(vex::directionType::rev, 5, vex::velocityUnits::pct);
+    IntakeR.spin(vex::directionType::rev, 5, vex::velocityUnits::pct);
   }
   else if (Controller1.ButtonB.pressing())
   {
-    trayTarget -= 5;
+    trayTarget -= 50;
+  }
+
+  if (trayTarget < 0)
+  {
+    trayTarget = 0;
   }
 }
 
@@ -234,9 +279,9 @@ static void controllerScreen(double armTarget, double trayTarget)
   std::string armTargetS = armTargetOS.str();
   std::string trayTargetS = trayTargetOS.str();
 
-  Controller1.Screen.print(armTargetS);
-  Controller1.Screen.newLine();
-  Controller1.Screen.print(trayTargetS);
+  // Controller1.Screen.print(armTargetS);
+  // Controller1.Screen.newLine();
+  // Controller1.Screen.print(trayTargetS);
 }
 
 // User Control Loop and Method
@@ -270,6 +315,15 @@ void usercontrol( void )
     // Macros
     Controller1.ButtonL1.pressed(cycleArmTarget); // L1 | Cycles through the heights the arm can be at
     Controller1.ButtonX.pressed(stasisMode);      // X  | Toggles speed of drive base
+    if (Controller1.ButtonY.pressing())
+    {
+      deploy();
+    }
+    if (Controller1.ButtonUp.pressing())
+    {
+      DriveL.spin(vex::directionType::fwd, 50, vex::velocityUnits::pct);
+      DriveR.spin(vex::directionType::fwd, 50, vex::velocityUnits::pct);
+    }
 
     controllerScreen(armTarget, trayTarget);
 
