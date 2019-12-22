@@ -37,14 +37,14 @@ void initialize() {
 
 	pros::lcd::register_btn1_cb(on_center_button);
 
-	pros::Motor DriveL (DRIVEL_PORT);
-	pros::Motor DriveR (DRIVER_PORT, true);
-	pros::Motor IntakeL (INTAKEL_PORT, true);
-	pros::Motor IntakeR (INTAKER_PORT);
-	pros::Motor TrayL (TRAYL_PORT);
-	pros::Motor TrayR (TRAYR_PORT, true);
-	pros::Motor ArmL (ARML_PORT, true);
-	pros::Motor ArmR (ARMR_PORT, true);
+	pros::Motor DriveL (DRIVEL_PORT, MOTOR_GEARSET_18, false, MOTOR_ENCODER_DEGREES);
+	pros::Motor DriveR (DRIVER_PORT, MOTOR_GEARSET_18, true, MOTOR_ENCODER_DEGREES);
+	pros::Motor IntakeL (INTAKEL_PORT, MOTOR_GEARSET_18, true, MOTOR_ENCODER_DEGREES);
+	pros::Motor IntakeR (INTAKER_PORT, MOTOR_GEARSET_18, false, MOTOR_ENCODER_DEGREES);
+	pros::Motor TrayL (TRAYL_PORT, MOTOR_GEARSET_36, false, MOTOR_ENCODER_DEGREES);
+	pros::Motor TrayR (TRAYR_PORT, MOTOR_GEARSET_36, true, MOTOR_ENCODER_DEGREES);
+	pros::Motor ArmL (ARML_PORT, MOTOR_GEARSET_36, true, MOTOR_ENCODER_DEGREES);
+	pros::Motor ArmR (ARMR_PORT, MOTOR_GEARSET_36, false, MOTOR_ENCODER_DEGREES);
 	pros::Controller master (CONTROLLER_MASTER);
 }
 
@@ -98,15 +98,22 @@ void intakeControl(pros::Controller master, pros::Motor IntakeL, pros::Motor Int
   }
 }
 
-void trayControl(pros::Controller master, double &trayTarget)
+void trayControl(pros::Controller master, pros::Motor TrayL, pros::Motor TrayR)
 {
 	if(master.get_digital(DIGITAL_A))
   {
-    trayTarget += 10;
+    TrayL.move_velocity(10);
+    TrayR.move_velocity(10);
   }
   else if(master.get_digital(DIGITAL_B))
   {
-		trayTarget -= 50;
+		TrayL.move_velocity(-10);
+    TrayR.move_velocity(-10);
+  }
+  else
+  {
+		TrayL.move_velocity(0);
+    TrayR.move_velocity(0);
   }
 }
 
@@ -165,9 +172,12 @@ void opcontrol()
 	ArmL.set_pos_pid(ArmPID);
 	ArmR.set_pos_pid(ArmPID);
 
-	double trayTarget = 0;
 	int armTargetIndex = 0;
-	double armTargets [3] = {0, 720, 1080};
+	double armTargets [3] = {0, 360, 540};
+
+	int count;
+
+	master.clear();
 
   while (true)
 	{
@@ -175,15 +185,13 @@ void opcontrol()
     DriveR.move(master.get_analog(ANALOG_RIGHT_Y));
 
 		intakeControl(master, IntakeL, IntakeR);
-		trayControl(master, trayTarget);
-		armControl(master, armTargetIndex, sizeof(armTargets));
-
-		TrayL.move_absolute(trayTarget, 100);
-		TrayR.move_absolute(trayTarget, 100);
+		trayControl(master, TrayL, TrayR);
+		armControl(master, armTargetIndex, 3);
 
 		ArmL.move_absolute(armTargets[armTargetIndex], 100);
 		ArmR.move_absolute(armTargets[armTargetIndex], 100);
 
+		count++;
     pros::delay(2);
   }
 }
