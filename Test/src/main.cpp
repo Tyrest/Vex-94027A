@@ -100,8 +100,36 @@ void intakeControl(pros::Controller master, pros::Motor IntakeL, pros::Motor Int
 
 void trayControl(pros::Controller master, double &trayTarget)
 {
-
+	if(master.get_digital(DIGITAL_A))
+  {
+    trayTarget += 10;
+  }
+  else if(master.get_digital(DIGITAL_B))
+  {
+		trayTarget -= 50;
+  }
 }
+
+void armControl(pros::Controller master, int &armTargetIndex, int length)
+{
+	if (master.get_digital_new_press(DIGITAL_L1) && armTargetIndex < length - 1)
+	{
+		armTargetIndex++;
+	}
+	else if (master.get_digital_new_press(DIGITAL_L2) && armTargetIndex > 0)
+	{
+		armTargetIndex--;
+	}
+}
+
+#define AKF 1
+#define AKP 1
+#define AKI 1
+#define AKD 1
+#define TKF 1
+#define TKP 1
+#define TKI 1
+#define TKD 1
 
 /**
  * Runs the operator control code. This function will be started in its own task
@@ -128,12 +156,33 @@ void opcontrol()
 	pros::Motor ArmR (ARMR_PORT);
 	pros::Controller master (CONTROLLER_MASTER);
 
+	pros::motor_pid_s_t ArmPID = pros::Motor::convert_pid(AKF, AKP, AKI, AKD);
+	pros::motor_pid_s_t TrayPID = pros::Motor::convert_pid(TKF, TKP, TKI, TKD);
+
+	TrayL.set_pos_pid(TrayPID);
+	TrayR.set_pos_pid(TrayPID);
+
+	ArmL.set_pos_pid(ArmPID);
+	ArmR.set_pos_pid(ArmPID);
+
+	double trayTarget = 0;
+	int armTargetIndex = 0;
+	double armTargets [3] = {0, 720, 1080};
+
   while (true)
 	{
     DriveL.move(master.get_analog(ANALOG_LEFT_Y));
     DriveR.move(master.get_analog(ANALOG_RIGHT_Y));
 
 		intakeControl(master, IntakeL, IntakeR);
+		trayControl(master, trayTarget);
+		armControl(master, armTargetIndex, sizeof(armTargets));
+
+		TrayL.move_absolute(trayTarget, 100);
+		TrayR.move_absolute(trayTarget, 100);
+
+		ArmL.move_absolute(armTargets[armTargetIndex], 100);
+		ArmR.move_absolute(armTargets[armTargetIndex], 100);
 
     pros::delay(2);
   }
