@@ -37,8 +37,8 @@ void initialize() {
 
 	pros::lcd::register_btn1_cb(on_center_button);
 
-	pros::Motor DriveL (DRIVEL_PORT, MOTOR_GEARSET_18, false, MOTOR_ENCODER_DEGREES);
-	pros::Motor DriveR (DRIVER_PORT, MOTOR_GEARSET_18, true, MOTOR_ENCODER_DEGREES);
+	pros::Motor DriveL (DRIVEL_PORT, MOTOR_GEARSET_18, false, MOTOR_ENCODER_ROTATIONS);
+	pros::Motor DriveR (DRIVER_PORT, MOTOR_GEARSET_18, true, MOTOR_ENCODER_ROTATIONS);
 	pros::Motor IntakeL (INTAKEL_PORT, MOTOR_GEARSET_18, true, MOTOR_ENCODER_DEGREES);
 	pros::Motor IntakeR (INTAKER_PORT, MOTOR_GEARSET_18, false, MOTOR_ENCODER_DEGREES);
 	pros::Motor TrayL (TRAYL_PORT, MOTOR_GEARSET_36, false, MOTOR_ENCODER_DEGREES);
@@ -175,10 +175,6 @@ void opcontrol()
 	int armTargetIndex = 0;
 	double armTargets [3] = {0, 360, 540};
 
-	int count;
-
-	master.clear();
-
   while (true)
 	{
     DriveL.move(master.get_analog(ANALOG_LEFT_Y));
@@ -191,7 +187,6 @@ void opcontrol()
 		ArmL.move_absolute(armTargets[armTargetIndex], 100);
 		ArmR.move_absolute(armTargets[armTargetIndex], 100);
 
-		count++;
     pros::delay(2);
   }
 }
