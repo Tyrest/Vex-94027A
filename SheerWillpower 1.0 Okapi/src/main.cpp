@@ -1,39 +1,5 @@
 #include "main.h"
 
-#define DRIVEL_PORT 1
-#define DRIVER_PORT 2
-#define INTAKEL_PORT 3
-#define INTAKER_PORT 4
-#define TRAYL_PORT 5
-#define TRAYR_PORT 6
-#define ARML_PORT 7
-#define ARMR_PORT 8
-
-const int NUM_ARM_HEIGHTS = 4;
-const int aH1 = 20;
-const int aH2 = 60;
-const int aH3 = 100;
-const int aH4 = 140;
-
-const int armHeights[NUM_ARM_HEIGHTS] = {aH1, aH2, aH3, aH4};
-
-const int trayStepRate = 5;						// Should not go above 20
-const int trayHitIntakeDegree = 360;	// Degree at which tray contacts intakes
-
-// Chassis Controller - lets us drive the robot around with open- or closed-loop control
-auto drive = ChassisControllerFactory::create
-(
-  DRIVEL_PORT, -DRIVER_PORT,
-	IterativePosPIDController::Gains{0.001, 0, 0.0001},
-  IterativePosPIDController::Gains{0.001, 0, 0.0001},
-  IterativePosPIDController::Gains{0.001, 0, 0.0001},
-  AbstractMotor::gearset::green,
-  {4_in, 11.5_in}
-);
-
-auto tray = AsyncControllerFactory::posIntegrated({TRAYL_PORT, -TRAYR_PORT});
-auto arms = AsyncControllerFactory::posIntegrated({-ARML_PORT, ARMR_PORT});
-
 /**
  * A callback function for LLEMU's center button.
  *
@@ -61,25 +27,6 @@ void initialize() {
 	pros::lcd::set_text(1, "Hello PROS User!");
 
 	pros::lcd::register_btn1_cb(on_center_button);
-
-	Motor IntakeL (INTAKEL_PORT, true,
-		AbstractMotor::gearset::green,
-		AbstractMotor::encoderUnits::degrees);
-	Motor IntakeR (INTAKER_PORT, false,
-		AbstractMotor::gearset::green,
-		AbstractMotor::encoderUnits::degrees);
-	Motor TrayL (TRAYL_PORT, false,
-		AbstractMotor::gearset::red,
-		AbstractMotor::encoderUnits::degrees);
-	Motor TrayR (TRAYR_PORT, true,
-		AbstractMotor::gearset::red,
-		AbstractMotor::encoderUnits::degrees);
-	Motor ArmL (ARML_PORT, true,
-		AbstractMotor::gearset::red,
-		AbstractMotor::encoderUnits::degrees);
-	Motor ArmR (ARMR_PORT, false,
-		AbstractMotor::gearset::red,
-		AbstractMotor::encoderUnits::degrees);
 }
 
 /**
@@ -113,49 +60,6 @@ void competition_initialize() {}
  */
 void autonomous() {}
 
-void intakeControl(Motor IntakeL, Motor IntakeR,
-									 ControllerButton intakeInBt, ControllerButton intakeOutBt)
-{
-	if (intakeInBt.isPressed())
-  {
-    IntakeL.moveVelocity(200);
-    IntakeR.moveVelocity(200);
-  }
-  else if (intakeOutBt.isPressed())
-  {
-		IntakeL.moveVelocity(-200);
-    IntakeR.moveVelocity(-200);
-  }
-  else
-  {
-		IntakeL.moveVelocity(0);
-    IntakeR.moveVelocity(0);
-  }
-}
-
-void trayControl(int &trayTarget, Motor IntakeL, Motor IntakeR,
-								 ControllerButton trayUpBt, ControllerButton trayDownBt)
-{
-	if (trayUpBt.isPressed())
-	{
-		trayTarget += trayStepRate;
-		if (trayTarget >= trayHitIntakeDegree)
-		{
-			IntakeL.moveVelocity(-trayStepRate * 2);
-	    IntakeR.moveVelocity(-trayStepRate * 2);
-		}
-	}
-	else if (trayDownBt.isPressed())
-	{
-		trayTarget -= trayStepRate * 5;
-		if (trayTarget >= trayHitIntakeDegree)
-		{
-			IntakeL.moveVelocity(trayStepRate * 10);
-	    IntakeR.moveVelocity(trayStepRate * 10);
-		}
-	}
-}
-
 void armControl(int &armHeightIndex,
 								ControllerButton armUpBt, ControllerButton armDownBt)
 {
@@ -184,37 +88,17 @@ void armControl(int &armHeightIndex,
  */
 void opcontrol()
 {
-	Motor IntakeL (INTAKEL_PORT);
-	Motor IntakeR (INTAKER_PORT);
-	Motor TrayL (TRAYL_PORT);
-	Motor TrayR (TRAYR_PORT);
-	Motor ArmL (ARML_PORT);
-	Motor ArmR (ARMR_PORT);
-
-	Controller master;
-
-	ControllerButton intakeInBt(ControllerDigital::R1);
-	ControllerButton intakeOutBt(ControllerDigital::R2);
-	ControllerButton trayUpBt(ControllerDigital::A);
-	ControllerButton trayDownBt(ControllerDigital::B);
-	ControllerButton armUpBt(ControllerDigital::L1);
-	ControllerButton armDownBt(ControllerDigital::L2);
-
 	int armHeightIndex = 0;
 	int trayTarget = 0;
 
 	while (true)
 	{
-		// Tank drive with left and right sticks
-    drive.tank(master.getAnalog(ControllerAnalog::leftY),
-               master.getAnalog(ControllerAnalog::rightY));
-
-		intakeControl(IntakeL, IntakeR, intakeInBt, intakeOutBt);
+		driveControl();
+		intakeControl();
 		trayControl(trayTarget, IntakeL, IntakeR, trayUpBt, trayDownBt);
 		armControl(armHeightIndex, armUpBt, armDownBt);
-
-		tray.setTarget(trayTarget);
-		arms.setTarget(armHeights[armHeightIndex]);
+		
+		arms.setTarget(ARM_HEIGHTS[armHeightIndex]);
 
 		pros::delay(10);
 	}
