@@ -60,19 +60,6 @@ void competition_initialize() {}
  */
 void autonomous() {}
 
-void armControl(int &armHeightIndex,
-								ControllerButton armUpBt, ControllerButton armDownBt)
-{
-	if (armUpBt.changedToPressed() && armHeightIndex < NUM_ARM_HEIGHTS - 1)
-	{
-		armHeightIndex++;
-	}
-	else if (armDownBt.changedToPressed() && armHeightIndex > 0)
-	{
-		armHeightIndex--;
-	}
-}
-
 /**
  * Runs the operator control code. This function will be started in its own task
  * with the default priority and stack size whenever the robot is enabled via
@@ -88,17 +75,12 @@ void armControl(int &armHeightIndex,
  */
 void opcontrol()
 {
-	int armHeightIndex = 0;
-	int trayTarget = 0;
-
 	while (true)
 	{
 		driveControl();
 		intakeControl();
-		trayControl(trayTarget, IntakeL, IntakeR, trayUpBt, trayDownBt);
-		armControl(armHeightIndex, armUpBt, armDownBt);
-		
-		arms.setTarget(ARM_HEIGHTS[armHeightIndex]);
+		trayControl();
+		armsControl();
 
 		pros::delay(10);
 	}

@@ -35,6 +35,10 @@ extern ControllerButton trayDownBt;
 extern ControllerButton armUpBt;
 extern ControllerButton armDownBt;
 
+// Targets
+extern int trayTarget;
+extern int armHeightIndex;
+
 // Constants
 extern const int NUM_ARM_HEIGHTS;
 extern const int AH_1;
