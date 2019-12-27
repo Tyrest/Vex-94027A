@@ -45,11 +45,13 @@ ChassisControllerPID drive = ChassisControllerFactory::create
   AbstractMotor::gearset::green,
   {4_in, 11.5_in}
 );
+AsyncPosPIDController tray =
+  AsyncControllerFactory::posPID({TRAYL_PORT, -TRAYR_PORT}, 0.001, 0.0, 0.0001);
+AsyncPosPIDController arms =
+  AsyncControllerFactory::posPID({-ARML_PORT, ARMR_PORT}, 0.001, 0.0, 0.0001);
 
-AsyncPosPIDController tray = AsyncControllerFactory::posPID({TRAYL_PORT, -TRAYR_PORT},
-                                           0.001, 0.0, 0.0001);
-AsyncPosPIDController arms = AsyncControllerFactory::posPID({-ARML_PORT, ARMR_PORT},
-                                           0.001, 0.0, 0.0001);
+AsyncMotionProfileController moPro =
+  AsyncControllerFactory::motionProfile(1.0, 2.0, 10.0, drive);
 
 // Controller
 Controller master;
