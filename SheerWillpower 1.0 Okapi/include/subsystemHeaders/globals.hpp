@@ -21,9 +21,11 @@ extern Motor IntakeR;
 
 // Controllers
 extern ChassisControllerPID drive;
+extern ChassisControllerPID driveB;
 extern AsyncPosPIDController tray;
 extern AsyncPosPIDController arms;
 extern AsyncMotionProfileController moPro;
+extern AsyncMotionProfileController moProB;
 
 // Controller
 extern Controller master;

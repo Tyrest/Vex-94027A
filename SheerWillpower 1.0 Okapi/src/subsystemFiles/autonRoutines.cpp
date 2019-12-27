@@ -43,6 +43,22 @@ possible (Should aim for all 4)
 void smallBlue()
 {
   forwardSweep();
+  drive.moveDistance(-20_in);
+  backLeftSCurve();
+  drive.moveDistanceAsync(-4_in);
+  forwardSweep();
+  intakeMove(127);
+  drive.turnAngle(45_deg);
+  drive.moveDistance(6_in);
+  drive.moveDistance(-6_in);
+  drive.turnAngle(-45_deg);
+  drive.moveDistance(-3_ft);
+  drive.turnAngle(-135_deg);
+  intakeMove(0);
+  drive.moveDistanceAsync(18_in);
+  trayTargetSet(630);
+  intakeMove(-5);
+  pros::delay(1500);
   drive.moveDistance(-2_ft);
 }
 

@@ -3,3 +3,7 @@
 void deploy();
 
 void forwardSweep();
+
+void backLeftSCurve();
+
+void backRightSCurve();
