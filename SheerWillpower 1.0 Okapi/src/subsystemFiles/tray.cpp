@@ -1,5 +1,7 @@
 #include "main.h"
 
+int trayTarget = 0;
+
 void trayTargetSet(int target)
 {
   tray.setTarget(target);

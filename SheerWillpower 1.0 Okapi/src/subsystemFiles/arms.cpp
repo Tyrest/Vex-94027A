@@ -1,5 +1,7 @@
 #include "main.h"
 
+int armHeightIndex = 0;
+
 void armsTargetSet(int target)
 {
   arms.setTarget(target);

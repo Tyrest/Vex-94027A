@@ -77,9 +77,11 @@ void opcontrol(void);
  */
 //#include <iostream>
 #include "subsystemHeaders/arms.hpp"
+#include "subsystemHeaders/autonRoutines.hpp"
 #include "subsystemHeaders/drive.hpp"
 #include "subsystemHeaders/globals.hpp"
 #include "subsystemHeaders/intakes.hpp"
+#include "subsystemHeaders/macros.hpp"
 #include "subsystemHeaders/tray.hpp"
 #endif
 

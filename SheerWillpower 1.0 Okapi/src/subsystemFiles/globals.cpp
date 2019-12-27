@@ -62,10 +62,6 @@ ControllerButton trayDownBt(ControllerDigital::B);
 ControllerButton armUpBt(ControllerDigital::L1);
 ControllerButton armDownBt(ControllerDigital::L2);
 
-// Targets
-int trayTarget = 0;
-int armHeightIndex = 0;
-
 // Constants
 const int NUM_ARM_HEIGHTS = 4;
 const int AH_0 = 0;
