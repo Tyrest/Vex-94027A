@@ -37,3 +37,13 @@ void backRightSCurve()
   moProB.setTarget("BackRight 2x2");
   moProB.waitUntilSettled();
 }
+
+void moveWithGyro(double distance, double speed)
+{
+
+}
+
+void turnWithGyro(double degrees, double speed)
+{
+
+}

@@ -10,12 +10,12 @@ const int ARML_PORT = 7;
 const int ARMR_PORT = 8;
 
 // Motors
-// Motor DriveL (INTAKEL_PORT, false,
-//   AbstractMotor::gearset::green,
-//   AbstractMotor::encoderUnits::degrees);
-// Motor DriveR (INTAKER_PORT, true,
-//   AbstractMotor::gearset::green,
-//   AbstractMotor::encoderUnits::degrees);
+Motor DriveL (DRIVEL_PORT, false,
+  AbstractMotor::gearset::green,
+  AbstractMotor::encoderUnits::degrees);
+Motor DriveR (DRIVER_PORT, true,
+  AbstractMotor::gearset::green,
+  AbstractMotor::encoderUnits::degrees);
 Motor IntakeL (INTAKEL_PORT, true,
   AbstractMotor::gearset::green,
   AbstractMotor::encoderUnits::degrees);
@@ -38,7 +38,7 @@ Motor IntakeR (INTAKER_PORT, false,
 // Controllers
 ChassisControllerPID drive = ChassisControllerFactory::create
 (
-  DRIVEL_PORT, -DRIVER_PORT,
+  -DRIVEL_PORT, DRIVER_PORT,
 	IterativePosPIDController::Gains{0.001, 0, 0.0001},
   IterativePosPIDController::Gains{0.001, 0, 0.0001},
   IterativePosPIDController::Gains{0.001, 0, 0.0001},
@@ -47,7 +47,7 @@ ChassisControllerPID drive = ChassisControllerFactory::create
 );
 ChassisControllerPID driveB = ChassisControllerFactory::create
 (
-  -DRIVEL_PORT, DRIVER_PORT,
+  DRIVEL_PORT, -DRIVER_PORT,
 	IterativePosPIDController::Gains{0.001, 0, 0.0001},
   IterativePosPIDController::Gains{0.001, 0, 0.0001},
   IterativePosPIDController::Gains{0.001, 0, 0.0001},
@@ -78,11 +78,13 @@ ControllerButton armDownBt(ControllerDigital::L2);
 // Constants
 const int NUM_ARM_HEIGHTS = 4;
 const int AH_0 = 0;
-const int AH_1 = 60;
-const int AH_2 = 100;
-const int AH_3 = 140;
+const int AH_1 = 630;
+const int AH_2 = 720;
+const int AH_3 = 1080;
 
 const int ARM_HEIGHTS[NUM_ARM_HEIGHTS] = {AH_0, AH_1, AH_2, AH_3};
+
+int armHeightIndex = 0;
 
 const int TRAY_STEP_RATE = 5;						// Should not go above 20
 const int TRAY_HIT_INTAKE_DEGREE = 360;	// Degree at which tray contacts intakes

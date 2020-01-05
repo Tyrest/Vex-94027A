@@ -26,5 +26,10 @@ void trayControl()
 		}
 	}
 
+  if (trayTarget < 0)
+  {
+    trayTarget = 0;
+  }
+
   trayTargetSet(trayTarget);
 }

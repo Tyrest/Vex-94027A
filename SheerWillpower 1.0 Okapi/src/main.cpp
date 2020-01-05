@@ -27,6 +27,11 @@ void initialize() {
 	pros::lcd::set_text(1, "Brought to you by Sheer Willpower");
 
 	pros::lcd::register_btn1_cb(on_center_button);
+
+	DriveL.setVoltageLimit(12700);
+	DriveR.setVoltageLimit(12700);
+	IntakeL.setVoltageLimit(12700);
+	IntakeR.setVoltageLimit(12700);
 }
 
 /**

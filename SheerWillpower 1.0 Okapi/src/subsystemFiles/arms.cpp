@@ -1,7 +1,5 @@
 #include "main.h"
 
-int armHeightIndex = 0;
-
 void armsTargetSet(int target)
 {
   arms.setTarget(target);
@@ -18,5 +16,5 @@ void armsControl()
 		armHeightIndex--;
 	}
 
-  armsTargetSet(armHeightIndex);
+  armsTargetSet(ARM_HEIGHTS[armHeightIndex]);
 }

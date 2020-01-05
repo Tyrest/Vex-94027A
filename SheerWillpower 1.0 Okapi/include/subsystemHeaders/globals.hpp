@@ -10,8 +10,8 @@ extern const int ARML_PORT;
 extern const int ARMR_PORT;
 
 // Motors
-// extern Motor DriveL;
-// extern Motor DriveR;
+extern Motor DriveL;
+extern Motor DriveR;
 extern Motor IntakeL;
 extern Motor IntakeR;
 // extern Motor TrayL;
@@ -46,6 +46,8 @@ extern const int AH_3;
 extern const int AH_4;
 
 extern const int ARM_HEIGHTS[];
+
+extern int armHeightIndex;
 
 extern const int TRAY_STEP_RATE;
 extern const int TRAY_HIT_INTAKE_DEGREE;

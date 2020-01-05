@@ -10,11 +10,11 @@ void intakeControl()
 {
 	if (intakeInBt.isPressed())
   {
-    intakeMove(127);
+    intakeMove(12700);
   }
   else if (intakeOutBt.isPressed())
   {
-		intakeMove(-127);
+		intakeMove(-12700);
   }
   else
   {
