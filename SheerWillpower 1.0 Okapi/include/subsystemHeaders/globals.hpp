@@ -37,6 +37,7 @@ extern ControllerButton trayUpBt;
 extern ControllerButton trayDownBt;
 extern ControllerButton armUpBt;
 extern ControllerButton armDownBt;
+extern ControllerButton autonTester;
 
 // Constants
 extern const int NUM_ARM_HEIGHTS;

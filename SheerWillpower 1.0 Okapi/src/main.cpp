@@ -68,7 +68,7 @@ void autonomous()
 	deploy();
 	// bigBlue();
 	// bigRed();
-	// smallBlue();
+	smallBlue();
 	// smallRed();
 }
 
@@ -93,6 +93,10 @@ void opcontrol()
 		intakeControl();
 		trayControl();
 		armsControl();
+		if (autonTester.changedToPressed())
+		{
+			autonomous();
+		}
 
 		pros::delay(10);
 	}

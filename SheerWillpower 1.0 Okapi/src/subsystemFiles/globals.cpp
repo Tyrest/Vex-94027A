@@ -74,6 +74,7 @@ ControllerButton trayUpBt(ControllerDigital::A);
 ControllerButton trayDownBt(ControllerDigital::B);
 ControllerButton armUpBt(ControllerDigital::L1);
 ControllerButton armDownBt(ControllerDigital::L2);
+ControllerButton autonTester(ControllerDigital::Y);
 
 // Constants
 const int NUM_ARM_HEIGHTS = 4;
