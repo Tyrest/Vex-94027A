@@ -24,18 +24,18 @@ void forwardSweep()
 
 void backLeftSCurve()
 {
-  moPro.generatePath({Point{0_ft, 0_ft, 0_deg},
+  moProB.generatePath({Point{0_ft, 0_ft, 0_deg},
                        Point{2_ft, 2_ft, 0_deg}}, "BackLeft 2x2");
-  moPro.setTarget("BackLeft 2x2");
-  moPro.waitUntilSettled();
+  moProB.setTarget("BackLeft 2x2");
+  moProB.waitUntilSettled();
 }
 
 void backRightSCurve()
 {
-  moPro.generatePath({Point{0_ft, 0_ft, 0_deg},
+  moProB.generatePath({Point{0_ft, 0_ft, 0_deg},
                        Point{2_ft, -2_ft, 0_deg}}, "BackRight 2x2");
-  moPro.setTarget("BackRight 2x2");
-  moPro.waitUntilSettled();
+  moProB.setTarget("BackRight 2x2");
+  moProB.waitUntilSettled();
 }
 
 void moveWithGyro(double distance, double speed)

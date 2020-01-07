@@ -48,7 +48,7 @@ void smallBlue()
   backLeftSCurve();
   drive.moveDistanceAsync(-4_in);
   forwardSweep();
-  intakeMove(127);
+  intakeMove(12700);
   drive.turnAngle(45_deg);
   drive.moveDistance(6_in);
   drive.moveDistance(-6_in);
@@ -58,7 +58,7 @@ void smallBlue()
   intakeMove(0);
   drive.moveDistanceAsync(18_in);
   trayTargetSet(630);
-  intakeMove(-5);
+  intakeMove(-500);
   pros::delay(1500);
   drive.moveDistance(-2_ft);
 }

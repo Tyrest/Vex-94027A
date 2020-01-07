@@ -12,18 +12,12 @@ void trayControl()
 	if (trayUpBt.isPressed())
 	{
 		trayTarget += TRAY_STEP_RATE;
-		if (trayTarget >= TRAY_HIT_INTAKE_DEGREE)
-		{
-			intakeMove(-TRAY_STEP_RATE * 100);
-		}
+		intakeMove(-800);
 	}
 	else if (trayDownBt.isPressed())
 	{
-		trayTarget -= TRAY_STEP_RATE * 500;
-		if (trayTarget >= TRAY_HIT_INTAKE_DEGREE)
-		{
-			intakeMove(TRAY_STEP_RATE * 500);
-		}
+		trayTarget -= TRAY_STEP_RATE * 5;
+		intakeMove(4000);
 	}
 
   if (trayTarget < 0)

@@ -55,9 +55,9 @@ ChassisControllerPID driveB = ChassisControllerFactory::create
   {4_in, 11.5_in}
 );
 AsyncPosPIDController tray =
-  AsyncControllerFactory::posPID({TRAYL_PORT, -TRAYR_PORT}, 0.001, 0.0, 0.0001);
+  AsyncControllerFactory::posPID({TRAYL_PORT, -TRAYR_PORT}, 0.01, 0.0, 0.0001);
 AsyncPosPIDController arms =
-  AsyncControllerFactory::posPID({-ARML_PORT, ARMR_PORT}, 0.001, 0.0, 0.0001);
+  AsyncControllerFactory::posPID({-ARML_PORT, ARMR_PORT}, 0.01, 0.0, 0.0001);
 
 AsyncMotionProfileController moPro =
   AsyncControllerFactory::motionProfile(1.0, 2.0, 10.0, drive);
