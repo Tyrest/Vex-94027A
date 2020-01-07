@@ -39,18 +39,18 @@ Motor IntakeR (INTAKER_PORT, false,
 ChassisControllerPID drive = ChassisControllerFactory::create
 (
   -DRIVEL_PORT, DRIVER_PORT,
-	IterativePosPIDController::Gains{0.001, 0, 0.0001},
-  IterativePosPIDController::Gains{0.001, 0, 0.0001},
-  IterativePosPIDController::Gains{0.001, 0, 0.0001},
+	IterativePosPIDController::Gains{0.002, 0, 0.0001},
+  IterativePosPIDController::Gains{0.002, 0, 0.0001},
+  IterativePosPIDController::Gains{0.002, 0, 0.0001},
   AbstractMotor::gearset::green,
   {4_in, 11.5_in}
 );
 ChassisControllerPID driveB = ChassisControllerFactory::create
 (
   DRIVEL_PORT, -DRIVER_PORT,
-	IterativePosPIDController::Gains{0.001, 0, 0.0001},
-  IterativePosPIDController::Gains{0.001, 0, 0.0001},
-  IterativePosPIDController::Gains{0.001, 0, 0.0001},
+	IterativePosPIDController::Gains{0.002, 0, 0.0001},
+  IterativePosPIDController::Gains{0.002, 0, 0.0001},
+  IterativePosPIDController::Gains{0.002, 0, 0.0001},
   AbstractMotor::gearset::green,
   {4_in, 11.5_in}
 );
@@ -88,4 +88,4 @@ const int ARM_HEIGHTS[NUM_ARM_HEIGHTS] = {AH_0, AH_1, AH_2, AH_3};
 int armHeightIndex = 0;
 
 const int TRAY_STEP_RATE = 5;						// Should not go above 20
-const int TRAY_HIT_INTAKE_DEGREE = 360;	// Degree at which tray contacts intakes
+const int TRAY_HIT_INTAKE_DEGREE = 180;	// Degree at which tray contacts intakes

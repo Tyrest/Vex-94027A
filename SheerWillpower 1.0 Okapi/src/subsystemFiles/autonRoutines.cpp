@@ -43,6 +43,7 @@ possible (Should aim for all 4)
 void smallBlue()
 {
   forwardSweep();
+  drive.waitUntilSettled();
   drive.moveDistance(-20_in);
   backLeftSCurve();
   drive.moveDistanceAsync(-4_in);

@@ -4,13 +4,13 @@ void deploy()
 {
   drive.moveDistanceAsync(6_in);
   intakeMove(-127);
-  trayTargetSet(360);
-  armsTargetSet(360);
+  trayTargetSet(720);
+  armsTargetSet(720);
   drive.waitUntilSettled();
   drive.moveDistanceAsync(-6_in);
   trayTargetSet(0);
   armsTargetSet(0);
-  pros::delay(200);
+  drive.waitUntilSettled();
   intakeMove(0);
 }
 
@@ -24,18 +24,18 @@ void forwardSweep()
 
 void backLeftSCurve()
 {
-  moProB.generatePath({Point{0_ft, 0_ft, 0_deg},
+  moPro.generatePath({Point{0_ft, 0_ft, 0_deg},
                        Point{2_ft, 2_ft, 0_deg}}, "BackLeft 2x2");
-  moProB.setTarget("BackLeft 2x2");
-  moProB.waitUntilSettled();
+  moPro.setTarget("BackLeft 2x2");
+  moPro.waitUntilSettled();
 }
 
 void backRightSCurve()
 {
-  moProB.generatePath({Point{0_ft, 0_ft, 0_deg},
+  moPro.generatePath({Point{0_ft, 0_ft, 0_deg},
                        Point{2_ft, -2_ft, 0_deg}}, "BackRight 2x2");
-  moProB.setTarget("BackRight 2x2");
-  moProB.waitUntilSettled();
+  moPro.setTarget("BackRight 2x2");
+  moPro.waitUntilSettled();
 }
 
 void moveWithGyro(double distance, double speed)
