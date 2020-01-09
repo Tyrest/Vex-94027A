@@ -4,10 +4,10 @@ void deploy();
 
 void forwardSweep();
 
-void backLeftSCurve();
+// void backLeftSCurve();
+//
+// void backRightSCurve();
 
-void backRightSCurve();
-
-void moveWithGyro(double distance, double speed);
-
-void turnWithGyro(double degrees, double speed);
+// void moveWithGyro(double distance, double speed);
+//
+// void turnWithGyro(double degrees, double speed);

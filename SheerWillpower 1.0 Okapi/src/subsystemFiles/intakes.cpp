@@ -6,6 +6,12 @@ void intakeMove(int voltage)
 	IntakeR.moveVoltage(voltage);
 }
 
+void intakeMoveVel(int velocity)
+{
+	IntakeL.moveVelocity(velocity);
+	IntakeR.moveVelocity(velocity);
+}
+
 void intakeControl()
 {
 	if (intakeInBt.isPressed())
