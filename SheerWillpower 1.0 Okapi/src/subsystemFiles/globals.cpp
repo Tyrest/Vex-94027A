@@ -22,18 +22,18 @@ Motor IntakeL (INTAKEL_PORT, true,
 Motor IntakeR (INTAKER_PORT, false,
   AbstractMotor::gearset::green,
   AbstractMotor::encoderUnits::degrees);
-// Motor TrayL (TRAYL_PORT, false,
-//   AbstractMotor::gearset::red,
-//   AbstractMotor::encoderUnits::degrees);
-// Motor TrayR (TRAYR_PORT, true,
-//   AbstractMotor::gearset::red,
-//   AbstractMotor::encoderUnits::degrees);
-// Motor ArmL (ARML_PORT, true,
-//   AbstractMotor::gearset::red,
-//   AbstractMotor::encoderUnits::degrees);
-// Motor ArmR (ARMR_PORT, false,
-//   AbstractMotor::gearset::red,
-//   AbstractMotor::encoderUnits::degrees);
+Motor TrayL (TRAYL_PORT, false,
+  AbstractMotor::gearset::red,
+  AbstractMotor::encoderUnits::degrees);
+Motor TrayR (TRAYR_PORT, true,
+  AbstractMotor::gearset::red,
+  AbstractMotor::encoderUnits::degrees);
+Motor ArmL (ARML_PORT, true,
+  AbstractMotor::gearset::red,
+  AbstractMotor::encoderUnits::degrees);
+Motor ArmR (ARMR_PORT, false,
+  AbstractMotor::gearset::red,
+  AbstractMotor::encoderUnits::degrees);
 
 // Controllers
 std::shared_ptr<ChassisController> drive = ChassisControllerBuilder()
@@ -44,11 +44,15 @@ std::shared_ptr<ChassisController> drive = ChassisControllerBuilder()
   .build();
 
 std::shared_ptr<AsyncPositionController<double, double>> tray =
-AsyncPosControllerBuilder().build();
-  // AsyncControllerFactory::posPID({TRAYL_PORT, -TRAYR_PORT}, 0.001, 0.0, 0.0001);
+  AsyncPosControllerBuilder()
+  .withMotor({TrayL, TrayR})
+  .withGains(IterativePosPIDController::Gains{0.001, 0, 0.0001})
+  .build();
 std::shared_ptr<AsyncPositionController<double, double>> arms =
-AsyncPosControllerBuilder().build();
-  // AsyncControllerFactory::posPID({-ARML_PORT, ARMR_PORT}, 0.01, 0.0, 0.0001);
+  AsyncPosControllerBuilder()
+  .withMotor({ArmL, ArmR})
+  .withGains(IterativePosPIDController::Gains{0.001, 0, 0.0001})
+  .build();
 
 // AsyncMotionProfileController moPro =
 //   AsyncControllerFactory::motionProfile(1.0, 2.0, 10.0, drive);

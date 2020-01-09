@@ -26,4 +26,5 @@ void trayControl()
   }
 
   trayTargetSet(trayTarget);
+  master.setText(0, 0, std::to_string(trayTarget));
 }
