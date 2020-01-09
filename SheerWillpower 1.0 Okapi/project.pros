@@ -285,6 +285,11 @@
                 "version": "4.0.1"
             }
         },
-        "upload_options": {}
+        "upload_options": {
+            "compress_bin": true,
+            "description": "Created with PROS",
+            "remote_name": "SheerWillpower",
+            "slot": 1
+        }
     }
 }

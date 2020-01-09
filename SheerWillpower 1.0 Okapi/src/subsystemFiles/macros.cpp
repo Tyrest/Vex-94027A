@@ -3,14 +3,14 @@
 void deploy()
 {
   trayTargetSet(630);
+  armsTargetSet(360);
   drive->moveDistance(12_in);
   drive->moveDistance(-6_in);
   // pros::delay(1000);
   intakeMoveVel(-20);
-  armsTargetSet(720);
-  trayTargetSet(0);
-  pros::delay(1000);
   armsTargetSet(0);
+  trayTargetSet(0);
+  pros::delay(3000);
 }
 
 void forwardSweep()
@@ -18,7 +18,7 @@ void forwardSweep()
   armsTargetSet(0);
   trayTargetSet(0);
   intakeMove(12700);
-  drive->moveDistanceAsync(4_ft);
+  drive->moveDistance(3_ft);
 }
 
 // void backLeftSCurve()
