@@ -36,33 +36,24 @@ Motor IntakeR (INTAKER_PORT, false,
 //   AbstractMotor::encoderUnits::degrees);
 
 // Controllers
-ChassisControllerPID drive = ChassisControllerFactory::create
-(
-  -DRIVEL_PORT, DRIVER_PORT,
-	IterativePosPIDController::Gains{0.002, 0, 0.0001},
+std::shared_ptr<ChassisController> drive = ChassisControllerBuilder()
+  .withMotors(DriveL, DriveR)
+  .withGains(IterativePosPIDController::Gains{0.002, 0, 0.0001},
   IterativePosPIDController::Gains{0.002, 0, 0.0001},
-  IterativePosPIDController::Gains{0.002, 0, 0.0001},
-  AbstractMotor::gearset::green,
-  {4_in, 11.5_in}
-);
-ChassisControllerPID driveB = ChassisControllerFactory::create
-(
-  DRIVEL_PORT, -DRIVER_PORT,
-	IterativePosPIDController::Gains{0.002, 0, 0.0001},
-  IterativePosPIDController::Gains{0.002, 0, 0.0001},
-  IterativePosPIDController::Gains{0.002, 0, 0.0001},
-  AbstractMotor::gearset::green,
-  {4_in, 11.5_in}
-);
-AsyncPosPIDController tray =
-  AsyncControllerFactory::posPID({TRAYL_PORT, -TRAYR_PORT}, 0.01, 0.0, 0.0001);
-AsyncPosPIDController arms =
-  AsyncControllerFactory::posPID({-ARML_PORT, ARMR_PORT}, 0.01, 0.0, 0.0001);
+  IterativePosPIDController::Gains{0.002, 0, 0.0001})
+  .build();
 
-AsyncMotionProfileController moPro =
-  AsyncControllerFactory::motionProfile(1.0, 2.0, 10.0, drive);
-AsyncMotionProfileController moProB =
-  AsyncControllerFactory::motionProfile(1.0, 2.0, 10.0, driveB);
+std::shared_ptr<AsyncPositionController<double, double>> tray =
+AsyncPosControllerBuilder().build();
+  // AsyncControllerFactory::posPID({TRAYL_PORT, -TRAYR_PORT}, 0.001, 0.0, 0.0001);
+std::shared_ptr<AsyncPositionController<double, double>> arms =
+AsyncPosControllerBuilder().build();
+  // AsyncControllerFactory::posPID({-ARML_PORT, ARMR_PORT}, 0.01, 0.0, 0.0001);
+
+// AsyncMotionProfileController moPro =
+//   AsyncControllerFactory::motionProfile(1.0, 2.0, 10.0, drive);
+// AsyncMotionProfileController moProB =
+//   AsyncControllerFactory::motionProfile(1.0, 2.0, 10.0, driveB);
 
 // Controller
 Controller master;
@@ -77,13 +68,12 @@ ControllerButton armDownBt(ControllerDigital::L2);
 ControllerButton autonTester(ControllerDigital::Y);
 
 // Constants
-const int NUM_ARM_HEIGHTS = 4;
+const int NUM_ARM_HEIGHTS = 3;
 const int AH_0 = 0;
-const int AH_1 = 630;
-const int AH_2 = 720;
-const int AH_3 = 1080;
+const int AH_1 = 720;
+const int AH_2 = 1080;
 
-const int ARM_HEIGHTS[NUM_ARM_HEIGHTS] = {AH_0, AH_1, AH_2, AH_3};
+const int ARM_HEIGHTS[NUM_ARM_HEIGHTS] = {AH_0, AH_1, AH_2};
 
 int armHeightIndex = 0;
 

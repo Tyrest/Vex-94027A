@@ -20,12 +20,12 @@ extern Motor IntakeR;
 // extern Motor ArmR;
 
 // Controllers
-extern ChassisControllerPID drive;
-extern ChassisControllerPID driveB;
-extern AsyncPosPIDController tray;
-extern AsyncPosPIDController arms;
-extern AsyncMotionProfileController moPro;
-extern AsyncMotionProfileController moProB;
+extern std::shared_ptr<ChassisController> drive;
+// extern ChassisControllerPID driveB;
+extern std::shared_ptr<AsyncPositionController<double, double>> tray;
+extern std::shared_ptr<AsyncPositionController<double, double>> arms;
+// extern AsyncMotionProfileController moPro;
+// extern AsyncMotionProfileController moProB;
 
 // Controller
 extern Controller master;

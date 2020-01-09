@@ -2,4 +2,6 @@
 
 void intakeMove(int voltage);
 
+void intakeMoveVel(int velocity);
+
 void intakeControl();

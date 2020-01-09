@@ -42,25 +42,32 @@ possible (Should aim for all 4)
 */
 void smallBlue()
 {
+  // forwardSweep();
+
+  // drive.waitUntilSettled();
+  // drive.moveDistance(-20_in);
+  // backLeftSCurve();
+  // drive.moveDistanceAsync(-4_in);
+  // pros::delay(500);
+
   forwardSweep();
-  drive.waitUntilSettled();
-  drive.moveDistance(-20_in);
-  backLeftSCurve();
-  drive.moveDistanceAsync(-4_in);
-  forwardSweep();
+
   intakeMove(12700);
-  drive.turnAngle(45_deg);
-  drive.moveDistance(6_in);
-  drive.moveDistance(-6_in);
-  drive.turnAngle(-45_deg);
-  drive.moveDistance(-3_ft);
-  drive.turnAngle(-135_deg);
-  intakeMove(0);
-  drive.moveDistanceAsync(18_in);
+  drive->turnAngle(45_deg);
+  drive->moveDistance(6_in);
+  drive->moveDistance(-6_in);
+  drive->turnAngle(-45_deg);
+
+  drive->moveDistance(-3_ft);
+
+  drive->turnAngle(-135_deg);
+  drive->moveDistanceAsync(18_in);
   trayTargetSet(630);
-  intakeMove(-500);
-  pros::delay(1500);
-  drive.moveDistance(-2_ft);
+  intakeMoveVel(-5);
+  pros::delay(3000);
+  drive->moveDistanceAsync(2_in);
+  pros::delay(1000);
+  drive->moveDistance(-2_ft);
 }
 
 /**

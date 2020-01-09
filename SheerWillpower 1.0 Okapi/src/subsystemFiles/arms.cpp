@@ -2,7 +2,7 @@
 
 void armsTargetSet(int target)
 {
-  arms.setTarget(target);
+  arms->setTarget(target);
 }
 
 void armsControl()
