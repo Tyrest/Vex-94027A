@@ -62,15 +62,15 @@ void smallBlue()
 
   drive->turnAngle(-135_deg);
   drive->moveDistanceAsync(18_in);
-  intakeMoveVel(-5);
+  intakeMoveVel(-8);
   pros::delay(1000);
-  trayTargetSet(630);
-  pros::delay(500);
   drive->moveDistanceAsync(-2_in);
+  trayTargetSet(630);
   pros::delay(3000);
   drive->moveDistanceAsync(2_in);
   pros::delay(1000);
   drive->moveDistance(-2_ft);
+  trayTargetSet(0);
 }
 
 /**
