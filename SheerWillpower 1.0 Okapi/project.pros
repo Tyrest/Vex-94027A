@@ -287,9 +287,9 @@
         },
         "upload_options": {
             "compress_bin": true,
-            "description": "Created with PROS",
-            "remote_name": "SheerWillpower",
-            "slot": 1
+            "description": "Autonomous SmallRed",
+            "remote_name": "SmallRed SheerWillpower",
+            "slot": 4
         }
     }
 }

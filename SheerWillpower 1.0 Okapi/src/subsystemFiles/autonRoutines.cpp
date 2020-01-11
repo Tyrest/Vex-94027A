@@ -17,7 +17,11 @@ other blocks as possible
 */
 void bigBlue()
 {
-
+  drive->moveDistanceAsync(2_ft);
+  pros::delay(2000);
+  drive->moveDistanceAsync(-1_ft);
+  pros::delay(2000);
+  deploy();
 }
 
 /**
@@ -27,7 +31,11 @@ Should start facing the stack of four
 */
 void bigRed()
 {
-
+  drive->moveDistanceAsync(2_ft);
+  pros::delay(2000);
+  drive->moveDistanceAsync(-1_ft);
+  pros::delay(2000);
+  deploy();
 }
 
 /**
@@ -42,6 +50,8 @@ possible (Should aim for all 4)
 */
 void smallBlue()
 {
+  deploy();
+
   // forwardSweep();
 
   // drive.waitUntilSettled();
@@ -80,5 +90,22 @@ Should start facing the second row from the small zone (one cube stacked)
 */
 void smallRed()
 {
+  deploy();
 
+  forwardSweep();
+
+  drive->moveDistance(-24_in);
+  intakeMove(0);
+
+  drive->turnAngle(135_deg);
+  drive->moveDistanceAsync(2_ft);
+  intakeMoveVel(-15);
+  trayTargetSet(600);
+  pros::delay(1000);
+  drive->moveDistance(-1_in);
+  pros::delay(500);
+  drive->moveDistanceAsync(2_in);
+  pros::delay(200);
+  drive->moveDistance(-2_ft);
+  trayTargetSet(0);
 }

@@ -45,11 +45,11 @@ void competition_initialize() {}
  */
 void autonomous()
 {
-	deploy();
+	// deploy();
 	// bigBlue();
 	// bigRed();
 	// smallBlue();
-	// smallRed();
+	smallRed();
 }
 
 /**

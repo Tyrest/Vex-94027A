@@ -11,7 +11,7 @@ void deploy()
   intakeMoveVel(0);
   armsTargetSet(0);
   pros::delay(1000);
-  intakeMoveVel(-20);
+
 }
 
 void forwardSweep()
