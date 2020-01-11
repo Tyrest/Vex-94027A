@@ -73,10 +73,10 @@ void opcontrol()
 		intakeControl();
 		trayControl();
 		armsControl();
-		if (autonTester.changedToPressed())
-		{
-			autonomous();
-		}
+		// if (autonTester.changedToPressed())
+		// {
+		// 	autonomous();
+		// }
 
 		pros::delay(10);
 	}
