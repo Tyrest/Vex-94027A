@@ -48,7 +48,7 @@ void autonomous()
 	deploy();
 	// bigBlue();
 	// bigRed();
-	smallBlue();
+	// smallBlue();
 	// smallRed();
 }
 

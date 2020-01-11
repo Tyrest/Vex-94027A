@@ -77,8 +77,8 @@ ControllerButton autonTester(ControllerDigital::Y);
 // Constants
 const int NUM_ARM_HEIGHTS = 3;
 const int AH_0 = 0;
-const int AH_1 = 720;
-const int AH_2 = 1080;
+const int AH_1 = 450;
+const int AH_2 = 630;
 
 const int ARM_HEIGHTS[NUM_ARM_HEIGHTS] = {AH_0, AH_1, AH_2};
 
