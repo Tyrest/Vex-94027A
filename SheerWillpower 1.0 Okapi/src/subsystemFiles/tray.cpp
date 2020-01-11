@@ -17,7 +17,6 @@ void trayControl()
 	else if (trayDownBt.isPressed())
 	{
 		trayTarget -= TRAY_STEP_RATE * 5;
-		intakeMoveVel(10);
 	}
 
   if (trayTarget < 0)
@@ -26,5 +25,5 @@ void trayControl()
   }
 
   trayTargetSet(trayTarget);
-  // master.setText(0, 0, std::to_string(trayTarget));
+  master.setText(0, 0, std::to_string(trayTarget));
 }

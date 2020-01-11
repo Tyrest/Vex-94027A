@@ -40,21 +40,21 @@ std::shared_ptr<ChassisController> drive = ChassisControllerBuilder()
   .withMotors(DriveL, DriveR)
   .withDimensions(AbstractMotor::gearset::green,
     {{4_in, 11.5_in}, imev5GreenTPR})
-  .withGains(IterativePosPIDController::Gains{0.002, 0, 0.0001},
-    IterativePosPIDController::Gains{0.002, 0, 0.0001},
-    IterativePosPIDController::Gains{0.002, 0, 0.0001})
-  .withMaxVelocity(50)
+  .withGains(IterativePosPIDController::Gains{0.0015, 0, 0.00001},
+    IterativePosPIDController::Gains{0.0015, 0, 0.0001},
+    IterativePosPIDController::Gains{0.0015, 0, 0.0001})
+  // .withMaxVelocity(50)
   .build();
 
 std::shared_ptr<AsyncPositionController<double, double>> tray =
   AsyncPosControllerBuilder()
   .withMotor({TrayL, TrayR})
-  .withGains(IterativePosPIDController::Gains{0.001, 0, 0.0001})
+  .withGains(IterativePosPIDController::Gains{0.0015, 0, 0.0001})
   .build();
 std::shared_ptr<AsyncPositionController<double, double>> arms =
   AsyncPosControllerBuilder()
   .withMotor({ArmL, ArmR})
-  .withGains(IterativePosPIDController::Gains{0.001, 0, 0.0001})
+  .withGains(IterativePosPIDController::Gains{0.005, 0, 0.0001})
   .build();
 
 // AsyncMotionProfileController moPro =

@@ -52,23 +52,23 @@ void smallBlue()
 
   forwardSweep();
 
-  intakeMove(12700);
-  drive->turnAngle(45_deg);
-  drive->moveDistance(6_in);
-  drive->moveDistance(-6_in);
-  drive->turnAngle(-45_deg);
+  // drive->turnAngle(45_deg);
+  // drive->moveDistance(4_in);
+  // drive->moveDistance(-4_in);
+  // drive->turnAngle(-45_deg);
 
-  drive->moveDistance(-2_ft);
+  drive->moveDistance(-24_in);
+  intakeMove(0);
 
   drive->turnAngle(-135_deg);
-  drive->moveDistanceAsync(18_in);
-  intakeMoveVel(-8);
+  drive->moveDistanceAsync(2_ft);
+  intakeMoveVel(-15);
+  trayTargetSet(600);
   pros::delay(1000);
-  drive->moveDistanceAsync(-2_in);
-  trayTargetSet(630);
-  pros::delay(3000);
+  drive->moveDistance(-1_in);
+  pros::delay(500);
   drive->moveDistanceAsync(2_in);
-  pros::delay(1000);
+  pros::delay(200);
   drive->moveDistance(-2_ft);
   trayTargetSet(0);
 }
