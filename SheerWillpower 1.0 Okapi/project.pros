@@ -287,9 +287,9 @@
         },
         "upload_options": {
             "compress_bin": true,
-            "description": "Autonomous SmallRed",
-            "remote_name": "SmallRed SheerWillpower",
-            "slot": 4
+            "description": "Autonomous smallBlue",
+            "remote_name": "smallBlue SheerWillpower",
+            "slot": 3
         }
     }
 }

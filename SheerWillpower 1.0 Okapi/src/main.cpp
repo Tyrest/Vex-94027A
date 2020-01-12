@@ -48,8 +48,8 @@ void autonomous()
 	// deploy();
 	// bigBlue();
 	// bigRed();
-	// smallBlue();
-	smallRed();
+	smallBlue();
+	// smallRed();
 }
 
 /**
@@ -67,6 +67,8 @@ void autonomous()
  */
 void opcontrol()
 {
+	drive->stop();
+
 	while (true)
 	{
 		driveControl();
