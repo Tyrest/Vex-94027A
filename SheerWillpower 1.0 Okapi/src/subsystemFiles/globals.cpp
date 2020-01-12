@@ -86,3 +86,7 @@ int armHeightIndex = 0;
 
 const int TRAY_STEP_RATE = 5;						// Should not go above 20
 const int TRAY_HIT_INTAKE_DEGREE = 180;	// Degree at which tray contacts intakes
+
+// Autonomous
+bool autonIsRed = true;
+bool autonIsSmall = true;

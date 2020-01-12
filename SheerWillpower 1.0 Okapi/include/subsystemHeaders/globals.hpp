@@ -51,3 +51,7 @@ extern int armHeightIndex;
 
 extern const int TRAY_STEP_RATE;
 extern const int TRAY_HIT_INTAKE_DEGREE;
+
+// Autonomous
+extern bool autonIsRed;
+extern bool autonIsSmall;
