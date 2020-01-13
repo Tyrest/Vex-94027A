@@ -2,16 +2,9 @@
 
 void gui()
 {
-  /*Create a Label on the currently active screen*/
-  lv_obj_t * label1 =  lv_label_create(lv_scr_act(), NULL);
-
-  /*Modify the Label's text*/
-  lv_label_set_text(label1, "Hello world!");
-
-  /* Align the Label to the center
-   * NULL means align on parent (which is the screen now)
-   * 0, 0 at the end means an x, y offset after alignment*/
-  lv_obj_align(label1, NULL, LV_ALIGN_CENTER, 0, 0);
+  colorSwitchInit();
+  sizeSwitchInit();
+  showLabels();
 }
 
 /**
@@ -27,6 +20,7 @@ void initialize()
 	IntakeL.setVoltageLimit(12700);
 	IntakeR.setVoltageLimit(12700);
 
+  pros::delay(100);
 	gui();
 }
 
@@ -61,11 +55,33 @@ void competition_initialize() {}
  */
 void autonomous()
 {
-	// deploy();
-	// bigBlue();
-	// bigRed();
-	// smallBlue();
-	// smallRed();
+  /**
+  When the color switch is "on," it means Red
+  When the size switch is "on," it means Big Goal
+  */
+
+  if (lv_sw_get_state(colorSwitch))
+  {
+    if (lv_sw_get_state(sizeSwitch))
+    {
+      bigRed();
+    }
+    else
+    {
+      smallRed();
+    }
+  }
+  else
+  {
+    if (lv_sw_get_state(sizeSwitch))
+    {
+      bigBlue();
+    }
+    else
+    {
+      smallBlue();
+    }
+  }
 }
 
 /**
@@ -91,10 +107,6 @@ void opcontrol()
 		intakeControl();
 		trayControl();
 		armsControl();
-		// if (autonTester.changedToPressed())
-		// {
-		// 	autonomous();
-		// }
 
 		pros::delay(10);
 	}

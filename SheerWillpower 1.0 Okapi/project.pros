@@ -287,9 +287,9 @@
         },
         "upload_options": {
             "compress_bin": true,
-            "description": "Autonomous smallBlue",
-            "remote_name": "smallBlue SheerWillpower",
-            "slot": 3
+            "description": "SheerWillpower Competition Program",
+            "remote_name": "SheerWillpower",
+            "slot": 1
         }
     }
 }

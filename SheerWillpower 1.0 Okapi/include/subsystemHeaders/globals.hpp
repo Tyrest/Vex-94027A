@@ -55,3 +55,7 @@ extern const int TRAY_HIT_INTAKE_DEGREE;
 // Autonomous
 extern bool autonIsRed;
 extern bool autonIsSmall;
+
+// GUI
+extern lv_obj_t * colorSwitch;
+extern lv_obj_t * sizeSwitch;

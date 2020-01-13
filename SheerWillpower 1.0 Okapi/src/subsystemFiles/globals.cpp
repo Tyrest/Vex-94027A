@@ -90,3 +90,7 @@ const int TRAY_HIT_INTAKE_DEGREE = 180;	// Degree at which tray contacts intakes
 // Autonomous
 bool autonIsRed = true;
 bool autonIsSmall = true;
+
+// GUI
+lv_obj_t * colorSwitch;
+lv_obj_t * sizeSwitch;

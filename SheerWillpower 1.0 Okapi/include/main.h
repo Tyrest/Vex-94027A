@@ -82,6 +82,7 @@ void opcontrol(void);
 #include "subsystemHeaders/drive.hpp"
 // #include "subsystemHeaders/driveBase.hpp"
 #include "subsystemHeaders/globals.hpp"
+#include "subsystemHeaders/gui.hpp"
 #include "subsystemHeaders/intakes.hpp"
 #include "subsystemHeaders/macros.hpp"
 #include "subsystemHeaders/tray.hpp"
