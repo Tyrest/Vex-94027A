@@ -17,11 +17,20 @@ other blocks as possible
 */
 void bigBlue()
 {
-  drive->moveDistanceAsync(2_ft);
-  pros::delay(2000);
-  drive->moveDistanceAsync(-1_ft);
-  pros::delay(2000);
   deploy();
+
+  forwardSweep();
+
+  drive->moveDistance(-20_in);
+  intakeMove(0);
+
+  drive->turnAngle(135_deg);
+  drive->moveDistanceAsync(1.5_ft);
+  intakeMoveVel(-20);
+  trayTargetSet(600);
+  pros::delay(2000);
+  intakeMoveVel(0);
+  drive->moveDistance(-2_ft);
 }
 
 /**
@@ -31,11 +40,20 @@ Should start facing the stack of four
 */
 void bigRed()
 {
-  drive->moveDistanceAsync(2_ft);
-  pros::delay(2000);
-  drive->moveDistanceAsync(-1_ft);
-  pros::delay(2000);
   deploy();
+
+  forwardSweep();
+
+  drive->moveDistance(-20_in);
+  intakeMove(0);
+
+  drive->turnAngle(-135_deg);
+  drive->moveDistanceAsync(1.5_ft);
+  intakeMoveVel(-20);
+  trayTargetSet(600);
+  pros::delay(2000);
+  intakeMoveVel(0);
+  drive->moveDistance(-2_ft);
 }
 
 /**
@@ -74,11 +92,8 @@ void smallBlue()
   drive->moveDistanceAsync(2_ft);
   intakeMoveVel(-20);
   trayTargetSet(600);
-  pros::delay(1000);
-  drive->moveDistance(-1_in);
-  pros::delay(500);
-  drive->moveDistanceAsync(2_in);
-  pros::delay(200);
+  pros::delay(2000);
+  intakeMoveVel(0);
   drive->moveDistance(-2_ft);
 }
 
@@ -100,10 +115,7 @@ void smallRed()
   drive->moveDistanceAsync(2_ft);
   intakeMoveVel(-20);
   trayTargetSet(600);
-  pros::delay(1000);
-  drive->moveDistance(-1_in);
-  pros::delay(500);
-  drive->moveDistanceAsync(2_in);
-  pros::delay(200);
+  pros::delay(2000);
+  intakeMoveVel(0);
   drive->moveDistance(-2_ft);
 }

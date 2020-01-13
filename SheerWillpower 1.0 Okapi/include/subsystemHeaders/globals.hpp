@@ -14,10 +14,10 @@ extern Motor DriveL;
 extern Motor DriveR;
 extern Motor IntakeL;
 extern Motor IntakeR;
-// extern Motor TrayL;
-// extern Motor TrayR;
-// extern Motor ArmL;
-// extern Motor ArmR;
+extern Motor TrayL;
+extern Motor TrayR;
+extern Motor ArmL;
+extern Motor ArmR;
 
 // Controllers
 extern std::shared_ptr<ChassisController> drive;
