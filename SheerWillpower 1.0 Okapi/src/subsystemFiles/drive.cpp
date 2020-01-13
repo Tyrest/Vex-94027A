@@ -15,9 +15,6 @@ void controllerAnalogToMotor(ControllerAnalog analogInput, Motor motor)
 
 void driveControl()
 {
-  // Tank drive with left and right sticks
-  // drive.tank(master.getAnalog(ControllerAnalog::leftY),
-  //            master.getAnalog(ControllerAnalog::leftY));
   controllerAnalogToMotor(ControllerAnalog::leftY, DriveL);
   controllerAnalogToMotor(ControllerAnalog::rightY, DriveR);
 }
