@@ -105,7 +105,7 @@ void opcontrol()
 	{
 		driveControl();
 		intakeControl();
-		trayControl();
+		tray.control();
 		armsControl();
 
     if (autonTester.changedToPressed())

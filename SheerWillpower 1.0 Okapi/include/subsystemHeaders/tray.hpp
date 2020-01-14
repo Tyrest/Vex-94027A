@@ -1,5 +1,18 @@
 #include "main.h"
 
-void trayTargetSet(int trayTarget);
+class Tray
+{
+private:
+  std::shared_ptr<AsyncPositionController<double, double>> tray;
+  int target;
+  Motor motorL;
+  Motor motorR;
+public:
+  const int STEP_RATE = 5;
 
-void trayControl();
+  Tray(int motorLPort, int motorRPort, double kp, double ki, double kd);
+
+  void setTarget(int target);
+
+  void control();
+};

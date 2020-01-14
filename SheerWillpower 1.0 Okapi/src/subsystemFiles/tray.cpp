@@ -1,29 +1,41 @@
 #include "main.h"
 
-int trayTarget = 0;
+Tray::Tray(int motorLPort, int motorRPort, double kp, double ki, double kd)
+: motorL(motorLPort, false,
+  AbstractMotor::gearset::red,
+  AbstractMotor::encoderUnits::degrees),
+  motorR(motorRPort, true,
+    AbstractMotor::gearset::red,
+    AbstractMotor::encoderUnits::degrees)
+{
+  target = 0;
+  tray = AsyncPosControllerBuilder()
+  .withMotor({motorL, motorR})
+  .withGains(IterativePosPIDController::Gains{0.0015, 0, 0.0001})
+  .build();
+}
 
-void trayTargetSet(int target)
+void Tray::setTarget(int target)
 {
   tray->setTarget(target);
 }
 
-void trayControl()
+void Tray::control()
 {
-	if (trayUpBt.isPressed())
+  if (trayUpBt.isPressed())
 	{
-		trayTarget += TRAY_STEP_RATE;
+		target += TRAY_STEP_RATE;
 		intakeMoveVel(-5);
 	}
 	else if (trayDownBt.isPressed())
 	{
-		trayTarget -= TRAY_STEP_RATE * 5;
+		target -= TRAY_STEP_RATE * 5;
 	}
 
-  if (trayTarget < 0)
+  if (target < 0)
   {
-    trayTarget = 0;
+    target = 0;
   }
 
-  trayTargetSet(trayTarget);
-  master.setText(0, 0, std::to_string(trayTarget));
+  this->setTarget(target);
 }

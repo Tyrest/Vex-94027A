@@ -27,7 +27,7 @@ void bigBlue()
   drive->turnAngle(135_deg);
   drive->moveDistanceAsync(1.5_ft);
   intakeMoveVel(-20);
-  trayTargetSet(600);
+  tray.setTarget(600);
   pros::delay(2000);
   intakeMoveVel(0);
   drive->moveDistance(-2_ft);
@@ -50,7 +50,7 @@ void bigRed()
   drive->turnAngle(-135_deg);
   drive->moveDistanceAsync(1.5_ft);
   intakeMoveVel(-20);
-  trayTargetSet(600);
+  tray.setTarget(600);
   pros::delay(2000);
   intakeMoveVel(0);
   drive->moveDistance(-2_ft);
@@ -91,7 +91,7 @@ void smallBlue()
   drive->turnAngle(-135_deg);
   drive->moveDistanceAsync(2_ft);
   intakeMoveVel(-25);
-  trayTargetSet(600);
+  tray.setTarget(600);
   pros::delay(2000);
   intakeMoveVel(0);
   drive->moveDistance(-2_ft);
@@ -114,7 +114,7 @@ void smallRed()
   drive->turnAngle(135_deg);
   drive->moveDistanceAsync(2_ft);
   intakeMoveVel(-25);
-  trayTargetSet(600);
+  tray.setTarget(600);
   pros::delay(2000);
   intakeMoveVel(0);
   drive->moveDistance(-2_ft);
