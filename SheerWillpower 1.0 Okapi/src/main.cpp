@@ -108,6 +108,10 @@ void opcontrol()
 		trayControl();
 		armsControl();
 
+    if (autonTester.changedToPressed())
+    {
+      autonomous();
+    }
 		pros::delay(10);
 	}
 }

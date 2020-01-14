@@ -90,7 +90,7 @@ void smallBlue()
 
   drive->turnAngle(-135_deg);
   drive->moveDistanceAsync(2_ft);
-  intakeMoveVel(-20);
+  intakeMoveVel(-25);
   trayTargetSet(600);
   pros::delay(2000);
   intakeMoveVel(0);
@@ -113,7 +113,7 @@ void smallRed()
 
   drive->turnAngle(135_deg);
   drive->moveDistanceAsync(2_ft);
-  intakeMoveVel(-20);
+  intakeMoveVel(-25);
   trayTargetSet(600);
   pros::delay(2000);
   intakeMoveVel(0);
