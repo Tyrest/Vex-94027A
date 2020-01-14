@@ -11,7 +11,7 @@ Tray::Tray(int motorLPort, int motorRPort, double kp, double ki, double kd)
   target = 0;
   tray = AsyncPosControllerBuilder()
   .withMotor({motorL, motorR})
-  .withGains(IterativePosPIDController::Gains{0.0015, 0, 0.0001})
+  .withGains(IterativePosPIDController::Gains{kp, ki, kd})
   .build();
 }
 
