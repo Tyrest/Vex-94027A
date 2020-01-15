@@ -21,6 +21,7 @@ extern Motor ArmR;
 
 // Controllers
 extern std::shared_ptr<ChassisController> drive;
+extern Intakes intakes;
 extern Tray tray;
 extern std::shared_ptr<AsyncPositionController<double, double>> arms;
 // extern AsyncMotionProfileController moPro;

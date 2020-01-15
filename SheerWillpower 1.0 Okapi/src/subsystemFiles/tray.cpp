@@ -1,10 +1,11 @@
 #include "main.h"
 
-Tray::Tray(int motorLPort, int motorRPort, double kp, double ki, double kd)
-: motorL(motorLPort, false,
+Tray::Tray(int motorLPort, int motorRPort, bool reversed,
+  double kp, double ki, double kd)
+: motorL(motorLPort, reversed,
   AbstractMotor::gearset::red,
   AbstractMotor::encoderUnits::degrees),
-  motorR(motorRPort, true,
+  motorR(motorRPort, !reversed,
     AbstractMotor::gearset::red,
     AbstractMotor::encoderUnits::degrees)
 {

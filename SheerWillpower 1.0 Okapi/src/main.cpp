@@ -104,7 +104,7 @@ void opcontrol()
 	while (true)
 	{
 		driveControl();
-		intakeControl();
+		intakes.control();
 		tray.control();
 		armsControl();
 

@@ -45,7 +45,8 @@ std::shared_ptr<ChassisController> drive = ChassisControllerBuilder()
     IterativePosPIDController::Gains{0.0015, 0, 0.0001})
   // .withMaxVelocity(50)
   .build();
-Tray tray (TRAYL_PORT, TRAYR_PORT, 0.0015, 0, 0.0001);
+Intakes intakes (INTAKEL_PORT, INTAKER_PORT, false);
+Tray tray (TRAYL_PORT, TRAYR_PORT, false, 0.0015, 0, 0.0001);
 std::shared_ptr<AsyncPositionController<double, double>> arms =
   AsyncPosControllerBuilder()
   .withMotor({ArmL, ArmR})

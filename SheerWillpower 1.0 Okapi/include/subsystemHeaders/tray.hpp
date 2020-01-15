@@ -10,7 +10,7 @@ private:
 public:
   const int STEP_RATE = 5;
 
-  Tray(int motorLPort, int motorRPort, double kp, double ki, double kd);
+  Tray(int motorLPort, int motorRPort, bool reversed, double kp, double ki, double kd);
 
   void setTarget(int target);
 
