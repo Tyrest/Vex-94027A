@@ -1,38 +1,29 @@
 #include "main.h"
 
-Intakes::Intakes(int motorLPort, int motorRPort, bool reversed)
-: motorL(motorLPort, !reversed,
-  AbstractMotor::gearset::green,
-  AbstractMotor::encoderUnits::degrees),
-  motorR(motorRPort, reversed,
-    AbstractMotor::gearset::green,
-    AbstractMotor::encoderUnits::degrees)
-{}
-
-void Intakes::move(int voltage)
+void intakesMove(int voltage)
 {
-	motorL.moveVoltage(voltage);
-	motorR.moveVoltage(voltage);
+	IntakeL.moveVoltage(voltage);
+	IntakeR.moveVoltage(voltage);
 }
 
-void Intakes::moveVel(int velocity)
+void intakesMoveVel(int velocity)
 {
 	IntakeL.moveVelocity(velocity);
 	IntakeR.moveVelocity(velocity);
 }
 
-void Intakes::control()
+void intakesControl()
 {
 	if (intakeInBt.isPressed())
   {
-    intakeMove(12700);
+    intakesMove(12700);
   }
   else if (intakeOutBt.isPressed())
   {
-		intakeMove(-12700);
+		intakesMove(-6400);
   }
   else
   {
-		intakeMove(0);
+		intakesMove(0);
   }
 }

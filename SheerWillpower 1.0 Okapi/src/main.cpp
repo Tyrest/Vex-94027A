@@ -104,14 +104,21 @@ void opcontrol()
 	while (true)
 	{
 		driveControl();
-		intakes.control();
-		tray.control();
+		intakesControl();
+		trayControl();
 		armsControl();
 
-    if (autonTester.changedToPressed())
+    if (forwardBt.isPressed())
     {
-      autonomous();
+      DriveL.moveVoltage(12700);
+      DriveR.moveVoltage(12700);
+      intakesMove(12700);
     }
+
+    // if (autonTester.changedToPressed())
+    // {
+    //   autonomous();
+    // }
 		pros::delay(10);
 	}
 }

@@ -22,14 +22,14 @@ void bigBlue()
   forwardSweep();
 
   drive->moveDistance(-20_in);
-  intakeMove(0);
+  intakesMove(0);
 
   drive->turnAngle(135_deg);
   drive->moveDistanceAsync(1.5_ft);
-  intakes.moveVel(-20);
-  tray.setTarget(600);
+  intakesMoveVel(-20);
+  traySetTarget(600);
   pros::delay(2000);
-  intakes.moveVel(0);
+  intakesMoveVel(0);
   drive->moveDistance(-2_ft);
 }
 
@@ -45,14 +45,14 @@ void bigRed()
   forwardSweep();
 
   drive->moveDistance(-20_in);
-  intakeMove(0);
+  intakesMove(0);
 
   drive->turnAngle(-135_deg);
   drive->moveDistanceAsync(1.5_ft);
-  intakes.moveVel(-20);
-  tray.setTarget(600);
+  intakesMoveVel(-20);
+  traySetTarget(600);
   pros::delay(2000);
-  intakes.moveVel(0);
+  intakesMoveVel(0);
   drive->moveDistance(-2_ft);
 }
 
@@ -86,14 +86,14 @@ void smallBlue()
   // drive->turnAngle(-45_deg);
 
   drive->moveDistance(-24_in);
-  intakeMove(0);
+  intakesMove(0);
 
   drive->turnAngle(-135_deg);
   drive->moveDistanceAsync(2_ft);
-  intakes.moveVel(-25);
-  tray.setTarget(600);
+  intakesMoveVel(-25);
+  traySetTarget(600);
   pros::delay(2000);
-  intakes.moveVel(0);
+  intakesMoveVel(0);
   drive->moveDistance(-2_ft);
 }
 
@@ -109,13 +109,13 @@ void smallRed()
   forwardSweep();
 
   drive->moveDistance(-24_in);
-  intakeMove(0);
+  intakesMove(0);
 
   drive->turnAngle(135_deg);
   drive->moveDistanceAsync(2_ft);
-  intakes.moveVel(-25);
-  tray.setTarget(600);
+  intakesMoveVel(-25);
+  traySetTarget(600);
   pros::delay(2000);
-  intakes.moveVel(0);
+  intakesMoveVel(0);
   drive->moveDistance(-2_ft);
 }

@@ -1,32 +1,18 @@
 #include "main.h"
 
-Tray::Tray(int motorLPort, int motorRPort, bool reversed,
-  double kp, double ki, double kd)
-: motorL(motorLPort, reversed,
-  AbstractMotor::gearset::red,
-  AbstractMotor::encoderUnits::degrees),
-  motorR(motorRPort, !reversed,
-    AbstractMotor::gearset::red,
-    AbstractMotor::encoderUnits::degrees)
-{
-  target = 0;
-  tray = AsyncPosControllerBuilder()
-  .withMotor({motorL, motorR})
-  .withGains(IterativePosPIDController::Gains{kp, ki, kd})
-  .build();
-}
+int target = 0;
 
-void Tray::setTarget(int target)
+void traySetTarget(int target)
 {
   tray->setTarget(target);
 }
 
-void Tray::control()
+void trayControl()
 {
   if (trayUpBt.isPressed())
 	{
 		target += TRAY_STEP_RATE;
-		intakeMoveVel(-5);
+		intakesMoveVel(-5);
 	}
 	else if (trayDownBt.isPressed())
 	{
@@ -38,5 +24,5 @@ void Tray::control()
     target = 0;
   }
 
-  this->setTarget(target);
+  traySetTarget(target);
 }

@@ -21,8 +21,7 @@ extern Motor ArmR;
 
 // Controllers
 extern std::shared_ptr<ChassisController> drive;
-extern Intakes intakes;
-extern Tray tray;
+extern std::shared_ptr<AsyncPositionController<double, double>> tray;
 extern std::shared_ptr<AsyncPositionController<double, double>> arms;
 // extern AsyncMotionProfileController moPro;
 // extern AsyncMotionProfileController moProB;
@@ -38,6 +37,7 @@ extern ControllerButton trayDownBt;
 extern ControllerButton armUpBt;
 extern ControllerButton armDownBt;
 extern ControllerButton autonTester;
+extern ControllerButton forwardBt;
 
 // Constants
 extern const int NUM_ARM_HEIGHTS;

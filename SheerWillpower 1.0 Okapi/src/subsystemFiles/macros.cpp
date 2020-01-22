@@ -2,13 +2,13 @@
 
 void deploy()
 {
-  tray.setTarget(600);
-  intakes.moveVel(-69);
+  traySetTarget(600);
+  intakesMoveVel(-69);
   pros::delay(800);
   armsTargetSet(360);
-  tray.setTarget(0);
+  traySetTarget(0);
   pros::delay(1200);
-  intakes.moveVel(0);
+  intakesMoveVel(0);
   armsTargetSet(0);
   pros::delay(1000);
 
@@ -17,8 +17,8 @@ void deploy()
 void forwardSweep()
 {
   armsTargetSet(0);
-  tray.setTarget(0);
-  intakes.move(12700);
+  traySetTarget(0);
+  intakesMove(12700);
   drive->moveDistance(4_ft);
 }
 

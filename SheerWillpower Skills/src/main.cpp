@@ -63,6 +63,7 @@ void autonomous()
  */
 void opcontrol()
 {
+	deploy();
 	drive->stop();
 
 	while (true)

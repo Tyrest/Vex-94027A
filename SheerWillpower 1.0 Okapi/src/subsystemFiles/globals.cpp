@@ -45,8 +45,11 @@ std::shared_ptr<ChassisController> drive = ChassisControllerBuilder()
     IterativePosPIDController::Gains{0.0015, 0, 0.0001})
   // .withMaxVelocity(50)
   .build();
-Intakes intakes (INTAKEL_PORT, INTAKER_PORT, false);
-Tray tray (TRAYL_PORT, TRAYR_PORT, false, 0.0015, 0, 0.0001);
+std::shared_ptr<AsyncPositionController<double, double>> tray =
+  AsyncPosControllerBuilder()
+  .withMotor({TrayL, TrayR})
+  .withGains(IterativePosPIDController::Gains{0.0015, 0, 0.0001})
+  .build();
 std::shared_ptr<AsyncPositionController<double, double>> arms =
   AsyncPosControllerBuilder()
   .withMotor({ArmL, ArmR})
@@ -69,11 +72,12 @@ ControllerButton trayDownBt(ControllerDigital::B);
 ControllerButton armUpBt(ControllerDigital::L1);
 ControllerButton armDownBt(ControllerDigital::L2);
 ControllerButton autonTester(ControllerDigital::Y);
+ControllerButton forwardBt(ControllerDigital::up);
 
 // Constants
 const int NUM_ARM_HEIGHTS = 3;
 const int AH_0 = 0;
-const int AH_1 = 450;
+const int AH_1 = 540;
 const int AH_2 = 630;
 
 const int ARM_HEIGHTS[NUM_ARM_HEIGHTS] = {AH_0, AH_1, AH_2};
