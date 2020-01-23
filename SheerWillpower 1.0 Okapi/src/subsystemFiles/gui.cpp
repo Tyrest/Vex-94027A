@@ -31,14 +31,14 @@ void colorSwitchInit()
   knob_on_style.body.shadow.type = LV_SHADOW_BOTTOM;
 
   /*Create a switch and apply the styles*/
-  lv_obj_t * sw1 = lv_sw_create(lv_scr_act(), NULL);
-  lv_sw_set_style(sw1, LV_SW_STYLE_BG, &bg_style);
-  lv_sw_set_style(sw1, LV_SW_STYLE_INDIC, &indic_style);
-  lv_sw_set_style(sw1, LV_SW_STYLE_KNOB_ON, &knob_on_style);
-  lv_sw_set_style(sw1, LV_SW_STYLE_KNOB_OFF, &knob_off_style);
+  lv_obj_t * colorSwitch = lv_sw_create(lv_scr_act(), NULL);
+  lv_sw_set_style(colorSwitch, LV_SW_STYLE_BG, &bg_style);
+  lv_sw_set_style(colorSwitch, LV_SW_STYLE_INDIC, &indic_style);
+  lv_sw_set_style(colorSwitch, LV_SW_STYLE_KNOB_ON, &knob_on_style);
+  lv_sw_set_style(colorSwitch, LV_SW_STYLE_KNOB_OFF, &knob_off_style);
 
-  lv_obj_set_size(sw1, 120, 45);
-  lv_obj_align(sw1, NULL, LV_ALIGN_IN_RIGHT_MID, -69, 0);
+  lv_obj_set_size(colorSwitch, 120, 45);
+  lv_obj_align(colorSwitch, NULL, LV_ALIGN_IN_RIGHT_MID, -69, 0);
 }
 
 void sizeSwitchInit()
@@ -72,14 +72,14 @@ void sizeSwitchInit()
   knob_on_style.body.shadow.type = LV_SHADOW_BOTTOM;
 
   /*Create a switch and apply the styles*/
-  lv_obj_t * sw1 = lv_sw_create(lv_scr_act(), NULL);
-  lv_sw_set_style(sw1, LV_SW_STYLE_BG, &bg_style);
-  lv_sw_set_style(sw1, LV_SW_STYLE_INDIC, &indic_style);
-  lv_sw_set_style(sw1, LV_SW_STYLE_KNOB_ON, &knob_on_style);
-  lv_sw_set_style(sw1, LV_SW_STYLE_KNOB_OFF, &knob_off_style);
+  lv_obj_t * sizeSwitch = lv_sw_create(lv_scr_act(), NULL);
+  lv_sw_set_style(sizeSwitch, LV_SW_STYLE_BG, &bg_style);
+  lv_sw_set_style(sizeSwitch, LV_SW_STYLE_INDIC, &indic_style);
+  lv_sw_set_style(sizeSwitch, LV_SW_STYLE_KNOB_ON, &knob_on_style);
+  lv_sw_set_style(sizeSwitch, LV_SW_STYLE_KNOB_OFF, &knob_off_style);
 
-  lv_obj_set_size(sw1, 120, 45);
-  lv_obj_align(sw1, NULL, LV_ALIGN_IN_LEFT_MID, 69, 0);
+  lv_obj_set_size(sizeSwitch, 120, 45);
+  lv_obj_align(sizeSwitch, NULL, LV_ALIGN_IN_LEFT_MID, 69, 0);
 }
 
 void showLabels()

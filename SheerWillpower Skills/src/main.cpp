@@ -63,6 +63,7 @@ void autonomous()
  */
 void opcontrol()
 {
+	master.clear();
 	deploy();
 	drive->stop();
 

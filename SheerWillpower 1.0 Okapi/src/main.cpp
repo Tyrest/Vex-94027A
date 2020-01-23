@@ -2,9 +2,9 @@
 
 void gui()
 {
-  // colorSwitchInit();
-  // sizeSwitchInit();
-  // showLabels();
+  colorSwitchInit();
+  sizeSwitchInit();
+  showLabels();
 }
 
 /**
@@ -61,6 +61,17 @@ void autonomous()
   */
 
   smallBlue();
+
+  // if (lv_sw_get_state(colorSwitch))
+  // {
+  //   if (lv_sw_get_state(sizeSwitch)) {bigRed();}
+  //   else {smallRed();}
+  // }
+  // else
+  // {
+  //   if (lv_sw_get_state(sizeSwitch)) {bigBlue();}
+  //   else {smallBlue();}
+  // }
 }
 
 /**
@@ -79,10 +90,12 @@ void autonomous()
 void opcontrol()
 {
 	drive->stop();
+  master.clear();
+
+  int countMS = 0;
 
 	while (true)
 	{
-
 		driveControl();
 		intakesControl();
 		trayControl();
@@ -90,8 +103,8 @@ void opcontrol()
 
     if (forwardBt.isPressed())
     {
-      DriveL.moveVoltage(12700);
-      DriveR.moveVoltage(12700);
+      DriveL.moveVelocity(150);
+      DriveR.moveVelocity(150);
       intakesMove(12700);
     }
 
@@ -99,6 +112,13 @@ void opcontrol()
     {
       autonomous();
     }
+
+    if (countMS % 100 == 0)
+    {
+      master.setText(0, 0, "Testing");
+    }
+
+    countMS += 10;
 		pros::delay(10);
 	}
 }

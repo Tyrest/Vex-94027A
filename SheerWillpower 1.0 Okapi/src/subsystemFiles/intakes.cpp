@@ -20,7 +20,14 @@ void intakesControl()
   }
   else if (intakeOutBt.isPressed())
   {
-		intakesMove(-6400);
+    if (armHeightIndex > 0)
+    {
+      intakesMove(-6400);
+    }
+		else
+    {
+      intakesMove(-12700);
+    }
   }
   else
   {

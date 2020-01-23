@@ -68,19 +68,26 @@ possible (Should aim for all 4)
 */
 void smallBlue()
 {
-  //deploy();
+  /*
+  deploy();
 
   intakesMove(12700);
   drive->moveDistance(38_in);
   intakesMove(0);
-  /*
+  drive->turnAngle(-143_deg);
+  */
 
-  drive->turnAngle(-135_deg);
-  drive->moveDistanceAsync(2_ft);
+  drive->moveDistanceAsync(30_in); //set to Async later
+  pros::delay(1400);
+
+  /*
   intakesMoveVel(-25);
   traySetTarget(600);
   pros::delay(2000);
   intakesMoveVel(0);
+  */
+
+  /*
   drive->moveDistance(-2_ft);
   */
 
@@ -93,18 +100,23 @@ Should start facing the second row from the small zone (one cube stacked)
 */
 void smallRed()
 {
+  /*
   deploy();
 
   forwardSweep();
 
   drive->moveDistance(-24_in);
   intakesMove(0);
+  */
 
   drive->turnAngle(135_deg);
+
+  /*
   drive->moveDistanceAsync(2_ft);
   intakesMoveVel(-25);
   traySetTarget(600);
   pros::delay(2000);
   intakesMoveVel(0);
   drive->moveDistance(-2_ft);
+  */
 }
