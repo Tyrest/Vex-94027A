@@ -2,15 +2,15 @@
 
 void deploy()
 {
-  traySetTarget(600);
+  traySetTarget(800);
   intakesMoveVel(-69);
-  pros::delay(800);
+  pros::delay(1000);
   armsTargetSet(360);
   traySetTarget(0);
   pros::delay(1200);
-  intakesMoveVel(0);
   armsTargetSet(0);
   pros::delay(1000);
+  intakesMoveVel(0);
 
 }
 
