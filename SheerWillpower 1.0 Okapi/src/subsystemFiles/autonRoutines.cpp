@@ -68,29 +68,30 @@ possible (Should aim for all 4)
 */
 void smallBlue()
 {
-  /*
   deploy();
 
-  intakesMove(12700);
-  drive->moveDistance(38_in);
-  intakesMove(0);
-  drive->turnAngle(-143_deg);
-  */
+  pros::delay(800); // to let the ramp lower below the intakes
 
-  drive->moveDistanceAsync(30_in); //set to Async later
+  intakesMove(12700);
+  drive->moveDistance(40_in);
+  drive->turnAngleAsync(-146_deg);
+  pros::delay(2000);
+  intakesMove(0);
+
+  drive->moveDistanceAsync(30.5_in);
+  intakesMoveVel(-20);
   pros::delay(1400);
 
-  /*
-  intakesMoveVel(-25);
+  // stacking
+
   traySetTarget(600);
-  pros::delay(2000);
-  intakesMoveVel(0);
-  */
+  pros::delay(3150);
 
-  /*
-  drive->moveDistance(-2_ft);
-  */
+  // backing out
 
+  intakesMoveVel(-20);
+  drive->moveDistanceAsync(-10_in);
+  pros::delay(1800);
 }
 
 /**

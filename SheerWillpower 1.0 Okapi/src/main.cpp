@@ -2,8 +2,8 @@
 
 void gui()
 {
-  colorSwitchInit();
-  sizeSwitchInit();
+  colorSwitch = colorSwitchInit();
+  sizeSwitch = sizeSwitchInit();
   showLabels();
 }
 
@@ -21,7 +21,7 @@ void initialize()
 	IntakeR.setVoltageLimit(12700);
 
   pros::delay(100);
-	// gui();
+  gui();
 }
 
 /**
@@ -60,18 +60,19 @@ void autonomous()
   When the size switch is "on," it means Big Goal
   */
 
-  smallBlue();
+  lv_obj_t * colorSwitchAuton = colorSwitch;
+  lv_obj_t * sizeSwitchAuton = sizeSwitch;
 
-  // if (lv_sw_get_state(colorSwitch))
-  // {
-  //   if (lv_sw_get_state(sizeSwitch)) {bigRed();}
-  //   else {smallRed();}
-  // }
-  // else
-  // {
-  //   if (lv_sw_get_state(sizeSwitch)) {bigBlue();}
-  //   else {smallBlue();}
-  // }
+  if (lv_sw_get_state(colorSwitchAuton))
+  {
+    if (lv_sw_get_state(sizeSwitchAuton)) {bigRed();}
+    else {smallRed();}
+  }
+  else
+  {
+    if (lv_sw_get_state(sizeSwitchAuton)) {bigBlue();}
+    else {smallBlue();}
+  }
 }
 
 /**

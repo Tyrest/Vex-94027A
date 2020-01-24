@@ -1,7 +1,7 @@
 #include "main.h"
 
-extern void colorSwitchInit();
+extern lv_obj_t * colorSwitchInit();
 
-extern void sizeSwitchInit();
+extern lv_obj_t * sizeSwitchInit();
 
 extern void showLabels();
