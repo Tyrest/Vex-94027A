@@ -70,11 +70,12 @@ void smallBlue()
 {
   deploy();
 
-  pros::delay(800); // to let the ramp lower below the intakes
+  pros::delay(1500); // to let the ramp lower below the intakes
 
   intakesMove(12700);
   drive->moveDistance(40_in);
-  drive->turnAngleAsync(-146_deg);
+  pros::delay(500);
+  drive->turnAngleAsync(-142_deg);
   pros::delay(2000);
   intakesMove(0);
 

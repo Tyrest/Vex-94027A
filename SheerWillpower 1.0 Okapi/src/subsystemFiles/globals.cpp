@@ -43,12 +43,12 @@ std::shared_ptr<ChassisController> drive = ChassisControllerBuilder()
   .withGains(IterativePosPIDController::Gains{0.0015, 0, 0.0001},
     IterativePosPIDController::Gains{0.0015, 0, 0.0001},
     IterativePosPIDController::Gains{0.0015, 0, 0.0001})
-  // .withMaxVelocity(50)
+   //.withMaxVelocity(80)
   .build();
 std::shared_ptr<AsyncPositionController<double, double>> tray =
   AsyncPosControllerBuilder()
   .withMotor({TrayL, TrayR})
-  .withGains(IterativePosPIDController::Gains{0.0015, 0, 0.0001})
+  .withGains(IterativePosPIDController::Gains{0.002, 0, 0.0001})
   .build();
 std::shared_ptr<AsyncPositionController<double, double>> arms =
   AsyncPosControllerBuilder()

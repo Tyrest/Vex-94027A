@@ -4,7 +4,7 @@ void deploy()
 {
   traySetTarget(800);
   intakesMoveVel(-69);
-  pros::delay(1000);
+  pros::delay(900);
   armsTargetSet(360);
   traySetTarget(0);
   pros::delay(1200);
