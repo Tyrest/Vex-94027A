@@ -17,20 +17,11 @@ other blocks as possible
 */
 void bigBlue()
 {
-  deploy();
-
-  forwardSweep();
-
-  drive->moveDistance(-20_in);
-  intakesMove(0);
-
-  drive->turnAngle(135_deg);
-  drive->moveDistanceAsync(1.5_ft);
-  intakesMoveVel(-20);
-  traySetTarget(600);
+  drive->moveDistanceAsync(2_ft);
   pros::delay(2000);
-  intakesMoveVel(0);
-  drive->moveDistance(-2_ft);
+  drive->moveDistance(-1_ft);
+  pros::delay(1000);
+  drive->stop();
 }
 
 /**
@@ -40,20 +31,11 @@ Should start facing the stack of four
 */
 void bigRed()
 {
-  deploy();
-
-  forwardSweep();
-
-  drive->moveDistance(-20_in);
-  intakesMove(0);
-
-  drive->turnAngle(-135_deg);
-  drive->moveDistanceAsync(1.5_ft);
-  intakesMoveVel(-20);
-  traySetTarget(600);
+  drive->moveDistanceAsync(2_ft);
   pros::delay(2000);
-  intakesMoveVel(0);
-  drive->moveDistance(-2_ft);
+  drive->moveDistance(-1_ft);
+  pros::delay(1000);
+  drive->stop();
 }
 
 /**
@@ -102,23 +84,29 @@ Should start facing the second row from the small zone (one cube stacked)
 */
 void smallRed()
 {
-  /*
   deploy();
 
-  forwardSweep();
+  pros::delay(1500); // to let the ramp lower below the intakes
 
-  drive->moveDistance(-24_in);
-  intakesMove(0);
-  */
-
-  drive->turnAngle(135_deg);
-
-  /*
-  drive->moveDistanceAsync(2_ft);
-  intakesMoveVel(-25);
-  traySetTarget(600);
+  intakesMove(12700);
+  drive->moveDistance(40_in);
+  pros::delay(500);
+  drive->turnAngleAsync(142_deg);
   pros::delay(2000);
-  intakesMoveVel(0);
-  drive->moveDistance(-2_ft);
-  */
+  intakesMove(0);
+
+  drive->moveDistanceAsync(30.5_in);
+  intakesMoveVel(-20);
+  pros::delay(1400);
+
+  // stacking
+
+  traySetTarget(600);
+  pros::delay(3150);
+
+  // backing out
+
+  intakesMoveVel(-20);
+  drive->moveDistanceAsync(-10_in);
+  pros::delay(1800);
 }

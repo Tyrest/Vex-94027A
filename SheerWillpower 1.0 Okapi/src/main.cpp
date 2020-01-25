@@ -109,10 +109,10 @@ void opcontrol()
       intakesMove(12700);
     }
 
-    if (autonTester.changedToPressed())
-    {
-      autonomous();
-    }
+    // if (autonTester.changedToPressed())
+    // {
+    //   autonomous();
+    // }
 
     if (countMS % 100 == 0)
     {
