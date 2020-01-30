@@ -22,6 +22,7 @@ void bigBlue()
   drive->moveDistance(-1_ft);
   pros::delay(1000);
   drive->stop();
+  deploy();
 }
 
 /**
@@ -36,6 +37,7 @@ void bigRed()
   drive->moveDistance(-1_ft);
   pros::delay(1000);
   drive->stop();
+  deploy();
 }
 
 /**
@@ -57,7 +59,7 @@ void smallBlue()
   intakesMove(12700);
   drive->moveDistance(40_in);
   pros::delay(500);
-  drive->turnAngleAsync(-142_deg);
+  drive->turnAngleAsync(-146_deg);
   pros::delay(2000);
   intakesMove(0);
 
@@ -91,7 +93,7 @@ void smallRed()
   intakesMove(12700);
   drive->moveDistance(40_in);
   pros::delay(500);
-  drive->turnAngleAsync(142_deg);
+  drive->turnAngleAsync(146_deg);
   pros::delay(2000);
   intakesMove(0);
 

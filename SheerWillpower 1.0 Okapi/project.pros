@@ -287,9 +287,9 @@
         },
         "upload_options": {
             "compress_bin": true,
-            "description": "SheerWillpower Competition Program",
-            "remote_name": "Sheer_Willpower",
-            "slot": 1
+            "description": "SheerWillpower Skills Program",
+            "remote_name": "Sheer_Willpower_Skills",
+            "slot": 2
         }
     }
 }

@@ -93,6 +93,8 @@ void opcontrol()
 	drive->stop();
   master.clear();
 
+  deploy();
+
   int countMS = 0;
 
 	while (true)
@@ -109,14 +111,9 @@ void opcontrol()
       intakesMove(12700);
     }
 
-    // if (autonTester.changedToPressed())
-    // {
-    //   autonomous();
-    // }
-
     if (countMS % 100 == 0)
     {
-      master.setText(0, 0, "Testing");
+      master.setText(0, 0, "Gamer Time");
     }
 
     countMS += 10;
