@@ -73,6 +73,7 @@ ControllerButton armUpBt(ControllerDigital::L1);
 ControllerButton armDownBt(ControllerDigital::L2);
 ControllerButton autonTester(ControllerDigital::Y);
 ControllerButton forwardBt(ControllerDigital::up);
+ControllerButton backwardBt(ControllerDigital::down);
 
 // Constants
 const int NUM_ARM_HEIGHTS = 3;
@@ -86,10 +87,6 @@ int armHeightIndex = 0;
 
 const int TRAY_STEP_RATE = 3;						// Should not go above 20
 const int TRAY_HIT_INTAKE_DEGREE = 180;	// Degree at which tray contacts intakes
-
-// Autonomous
-bool autonIsRed = true;
-bool autonIsSmall = true;
 
 // GUI
 lv_obj_t * colorSwitch;

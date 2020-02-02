@@ -38,6 +38,7 @@ extern ControllerButton armUpBt;
 extern ControllerButton armDownBt;
 extern ControllerButton autonTester;
 extern ControllerButton forwardBt;
+extern ControllerButton backwardBt;
 
 // Constants
 extern const int NUM_ARM_HEIGHTS;
@@ -52,10 +53,6 @@ extern int armHeightIndex;
 
 extern const int TRAY_STEP_RATE;
 extern const int TRAY_HIT_INTAKE_DEGREE;
-
-// Autonomous
-extern bool autonIsRed;
-extern bool autonIsSmall;
 
 // GUI
 extern lv_obj_t * colorSwitch;

@@ -104,11 +104,17 @@ void opcontrol()
 		trayControl();
 		armsControl();
 
-    if (forwardBt.isPressed())
+    if (backwardBt.isPressed())
+    {
+      DriveL.moveVelocity(-50);
+      DriveR.moveVelocity(-50);
+      intakesMoveVel(-50);
+    }
+    else if (forwardBt.isPressed())
     {
       DriveL.moveVelocity(200);
       DriveR.moveVelocity(200);
-      intakesMove(12700);
+      intakesMoveVel(200);
     }
 
     if (countMS % 100 == 0)
