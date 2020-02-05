@@ -9,7 +9,11 @@ void traySetTarget(int target)
 
 void trayControl()
 {
-  if (trayUpBt.isPressed())
+  if (armHeightIndex > 0)
+  {
+    target = 360;
+  }
+  else if (trayUpBt.isPressed())
 	{
 		target += TRAY_STEP_RATE;
 		intakesMoveVel(50);

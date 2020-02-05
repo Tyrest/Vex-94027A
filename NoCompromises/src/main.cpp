@@ -94,8 +94,6 @@ void opcontrol()
 	drive->stop();
   master.clear();
 
-  deploy();
-
   int countMS = 0;
 
 	while (true)
@@ -114,8 +112,8 @@ void opcontrol()
     else if (forwardBt.isPressed())
     {
       double closest90 = 90 * round(imu.get_rotation() / 90.0);
-      DriveL.moveVoltage(6400 + (400 * (closest90 - imu.get_rotation())));
-      DriveR.moveVoltage(6400 - (400 * (closest90 - imu.get_rotation())));
+      DriveL.moveVoltage(9600 + (400 * (closest90 - imu.get_rotation())));
+      DriveR.moveVoltage(9600 - (400 * (closest90 - imu.get_rotation())));
       intakesMove(12700);
     }
 

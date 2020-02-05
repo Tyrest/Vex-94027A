@@ -55,6 +55,7 @@ std::shared_ptr<AsyncPositionController<double, double>> arms =
   AsyncPosControllerBuilder()
   .withMotor({ArmL, ArmR})
   .withGains(IterativePosPIDController::Gains{0.005, 0, 0.0001})
+  .withMaxVelocity(50)
   .build();
 
 // AsyncMotionProfileController moPro =
@@ -82,8 +83,8 @@ ControllerButton backwardBt(ControllerDigital::down);
 // Constants
 const int NUM_ARM_HEIGHTS = 3;
 const int AH_0 = 0;
-const int AH_1 = 540;
-const int AH_2 = 630;
+const int AH_1 = 420;
+const int AH_2 = 540;
 
 const int ARM_HEIGHTS[NUM_ARM_HEIGHTS] = {AH_0, AH_1, AH_2};
 
