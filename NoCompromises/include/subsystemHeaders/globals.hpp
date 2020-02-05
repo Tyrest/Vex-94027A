@@ -8,6 +8,7 @@ extern const int TRAYL_PORT;
 extern const int TRAYR_PORT;
 extern const int ARML_PORT;
 extern const int ARMR_PORT;
+extern const int IMU_PORT;
 
 // Motors
 extern Motor DriveL;
@@ -25,6 +26,9 @@ extern std::shared_ptr<AsyncPositionController<double, double>> tray;
 extern std::shared_ptr<AsyncPositionController<double, double>> arms;
 // extern AsyncMotionProfileController moPro;
 // extern AsyncMotionProfileController moProB;
+
+// Inertial Sensor
+extern pros::Imu imu;
 
 // Controller
 extern Controller master;

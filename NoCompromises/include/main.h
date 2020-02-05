@@ -77,6 +77,7 @@ void opcontrol(void);
  * You can add C++-only headers here
  */
 //#include <iostream>
+#include <math.h>
 #include "subsystemHeaders/arms.hpp"
 #include "subsystemHeaders/autonRoutines.hpp"
 #include "subsystemHeaders/drive.hpp"

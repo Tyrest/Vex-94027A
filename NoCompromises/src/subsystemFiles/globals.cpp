@@ -1,13 +1,14 @@
 #include "main.h"
 
-const int DRIVEL_PORT = 1;
-const int DRIVER_PORT = 2;
+const int DRIVEL_PORT = 11;
+const int DRIVER_PORT = 12;
 const int INTAKEL_PORT = 3;
 const int INTAKER_PORT = 4;
-const int TRAYL_PORT = 5;
-const int TRAYR_PORT = 6;
+const int TRAYL_PORT = 15;
+const int TRAYR_PORT = 16;
 const int ARML_PORT = 7;
 const int ARMR_PORT = 8;
+const int IMU_PORT = 9;
 
 // Motors
 Motor DriveL (DRIVEL_PORT, false,
@@ -60,6 +61,9 @@ std::shared_ptr<AsyncPositionController<double, double>> arms =
 //   AsyncControllerFactory::motionProfile(1.0, 2.0, 10.0, drive);
 // AsyncMotionProfileController moProB =
 //   AsyncControllerFactory::motionProfile(1.0, 2.0, 10.0, driveB);
+
+// Inertial Sensor
+pros::Imu imu(IMU_PORT);
 
 // Controller
 Controller master;

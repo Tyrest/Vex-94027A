@@ -19,8 +19,9 @@ void initialize()
 	DriveR.setVoltageLimit(12700);
 	IntakeL.setVoltageLimit(12700);
 	IntakeR.setVoltageLimit(12700);
+  imu.reset();
 
-  pros::delay(100);
+  pros::delay(2500);
   gui();
 }
 
@@ -106,15 +107,16 @@ void opcontrol()
 
     if (backwardBt.isPressed())
     {
-      DriveL.moveVelocity(-50);
-      DriveR.moveVelocity(-50);
-      intakesMoveVel(-50);
+      DriveL.moveVoltage(-6400);
+      DriveR.moveVoltage(-6400);
+      intakesMove(-6400);
     }
     else if (forwardBt.isPressed())
     {
-      DriveL.moveVelocity(200);
-      DriveR.moveVelocity(200);
-      intakesMoveVel(200);
+      double closest90 = 90 * round(imu.get_rotation() / 90.0);
+      DriveL.moveVoltage(6400 + (400 * (closest90 - imu.get_rotation())));
+      DriveR.moveVoltage(6400 - (400 * (closest90 - imu.get_rotation())));
+      intakesMove(12700);
     }
 
     if (countMS % 100 == 0)
