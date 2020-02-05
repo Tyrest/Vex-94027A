@@ -111,9 +111,9 @@ void opcontrol()
     }
     else if (forwardBt.isPressed())
     {
-      double closest90 = 90 * round(imu.get_rotation() / 90.0);
-      DriveL.moveVoltage(9600 + (400 * (closest90 - imu.get_rotation())));
-      DriveR.moveVoltage(9600 - (400 * (closest90 - imu.get_rotation())));
+      // double closest90 = 90 * round(imu.get_rotation() / 90.0);
+      DriveL.moveVoltage(9600);
+      DriveR.moveVoltage(9600);
       intakesMove(12700);
     }
 

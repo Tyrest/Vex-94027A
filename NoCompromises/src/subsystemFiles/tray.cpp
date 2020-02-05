@@ -20,12 +20,16 @@ void trayControl()
 	}
 	else if (trayDownBt.isPressed())
 	{
-		target -= TRAY_STEP_RATE * 5;
+		target -= TRAY_STEP_RATE * 4;
 	}
 
   if (target < 0)
   {
     target = 0;
+  }
+  else if (target > 880)
+  {
+    target = 880;
   }
 
   traySetTarget(target);
