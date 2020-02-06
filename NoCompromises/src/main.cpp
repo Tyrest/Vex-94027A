@@ -15,6 +15,8 @@ void gui()
  */
 void initialize()
 {
+  master.clear();
+
 	DriveL.setVoltageLimit(12700);
 	DriveR.setVoltageLimit(12700);
 	IntakeL.setVoltageLimit(12700);
@@ -23,6 +25,8 @@ void initialize()
 
   pros::delay(2500);
   gui();
+
+  master.setText(0, 0, "Gamer Time");
 }
 
 /**
@@ -92,7 +96,6 @@ void autonomous()
 void opcontrol()
 {
 	drive->stop();
-  master.clear();
 
   int countMS = 0;
 
@@ -111,16 +114,14 @@ void opcontrol()
     }
     else if (forwardBt.isPressed())
     {
-      // double closest90 = 90 * round(imu.get_rotation() / 90.0);
-      DriveL.moveVoltage(9600);
-      DriveR.moveVoltage(9600);
+      double closest90 = 90 * round(imu.get_heading() / 90.0);
+      int turningFactor = (int)(400 * (closest90 - imu.get_heading()));
+      DriveL.moveVoltage(6900 + turningFactor);
+      DriveR.moveVoltage(6900 - turningFactor);
       intakesMove(12700);
     }
 
-    if (countMS % 100 == 0)
-    {
-      master.setText(0, 0, "Gamer Time");
-    }
+    printf("Inertial heading value: %f", imu.get_heading());
 
     countMS += 10;
 		pros::delay(10);
