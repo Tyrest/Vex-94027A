@@ -119,9 +119,8 @@ void opcontrol()
       DriveL.moveVoltage(6900 + turningFactor);
       DriveR.moveVoltage(6900 - turningFactor);
       intakesMove(12700);
+      printf("Inertial heading value: %f\n", imu.get_heading());
     }
-
-    printf("Inertial heading value: %f", imu.get_heading());
 
     countMS += 10;
 		pros::delay(10);

@@ -40,11 +40,11 @@ Motor ArmR (ARMR_PORT, false,
 std::shared_ptr<ChassisController> drive = ChassisControllerBuilder()
   .withMotors(DriveL, DriveR)
   .withDimensions(AbstractMotor::gearset::green,
-    {{4_in, 11.5_in}, imev5GreenTPR})
+    {{4_in, 10_in}, imev5GreenTPR})
   .withGains(IterativePosPIDController::Gains{0.0015, 0, 0.0001},
     IterativePosPIDController::Gains{0.0015, 0, 0.0001},
     IterativePosPIDController::Gains{0.0015, 0, 0.0001})
-   //.withMaxVelocity(80)
+   .withMaxVelocity(120)
   .build();
 std::shared_ptr<AsyncPositionController<double, double>> tray =
   AsyncPosControllerBuilder()

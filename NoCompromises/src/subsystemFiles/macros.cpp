@@ -2,9 +2,11 @@
 
 void deploy()
 {
+  drive->moveDistance(8_in);
+  drive->moveDistanceAsync(-6_in);
+  pros::delay(500);
   intakesMove(-12700);
   pros::delay(1500);
-  intakesMove(0);
 }
 
 void forwardSweep()

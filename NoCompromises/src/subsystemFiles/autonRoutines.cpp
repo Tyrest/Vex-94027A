@@ -32,12 +32,25 @@ Should start facing the stack of four
 */
 void bigRed()
 {
+  /*
   drive->moveDistanceAsync(2_ft);
   pros::delay(2000);
   drive->moveDistance(-1_ft);
   pros::delay(1000);
   drive->stop();
+  deploy(); */
+
+  // 3 block Autonomous
+  // deploy
   deploy();
+
+  // forward
+
+  // turn 90 degrees left
+
+  // forward 24-ish inches
+
+  //
 }
 
 /**
@@ -54,27 +67,29 @@ void smallBlue()
 {
   deploy();
 
+  traySetTarget(0);
   intakesMove(12700);
   drive->moveDistance(40_in);
-  drive->moveDistance(-24_in);
+  drive->moveDistance(-30_in);
   drive->turnAngle(-135_deg);
   pros::delay(1000);
   intakesMove(0);
 
-  drive->moveDistance(18_in);
+  drive->moveDistanceAsync(13_in);
+  pros::delay(1300);
+  drive->stop();
 
-  intakesMove(3200);
-  traySetTarget(880);
-  pros::delay(420);
-  intakesMove(-12700);
-  pros::delay(210);
-  intakesMove(3200);
-  pros::delay(420);
+  intakesMove(-4800);
+  traySetTarget(840);
+  pros::delay(960);
+  intakesMove(4800);
+  pros::delay(1280);
+  traySetTarget(0);
 
-  DriveL.moveVoltage(-6400);
-  DriveR.moveVoltage(-6400);
-  intakesMove(-6400);
-  pros::delay(1000);
+  DriveL.moveVoltage(-3200);
+  DriveR.moveVoltage(-3200);
+  intakesMove(-3200);
+  pros::delay(2000);
   DriveL.moveVoltage(0);
   DriveR.moveVoltage(0);
   intakesMove(0);
@@ -88,8 +103,6 @@ Should start facing the second row from the small zone (one cube stacked)
 void smallRed()
 {
   deploy();
-
-  pros::delay(1500); // to let the ramp lower below the intakes
 
   intakesMove(12700);
   drive->moveDistance(40_in);
