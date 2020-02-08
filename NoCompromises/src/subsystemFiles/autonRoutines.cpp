@@ -72,11 +72,10 @@ void smallBlue()
   drive->moveDistance(40_in);
   drive->moveDistance(-30_in);
   drive->turnAngle(-135_deg);
-  pros::delay(1000);
   intakesMove(0);
 
-  drive->moveDistanceAsync(13_in);
-  pros::delay(1300);
+  drive->moveDistanceAsync(16_in);
+  pros::delay(1280);
   drive->stop();
 
   intakesMove(-4800);
@@ -86,9 +85,9 @@ void smallBlue()
   pros::delay(1280);
   traySetTarget(0);
 
-  DriveL.moveVoltage(-3200);
-  DriveR.moveVoltage(-3200);
-  intakesMove(-3200);
+  DriveL.moveVoltage(-4800);
+  DriveR.moveVoltage(-4800);
+  intakesMove(-4800);
   pros::delay(2000);
   DriveL.moveVoltage(0);
   DriveR.moveVoltage(0);
