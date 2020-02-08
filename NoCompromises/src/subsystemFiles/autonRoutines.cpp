@@ -22,7 +22,6 @@ void bigBlue()
   drive->moveDistance(-1_ft);
   pros::delay(1000);
   drive->stop();
-  deploy();
 }
 
 /**
@@ -32,25 +31,11 @@ Should start facing the stack of four
 */
 void bigRed()
 {
-  /*
   drive->moveDistanceAsync(2_ft);
   pros::delay(2000);
   drive->moveDistance(-1_ft);
   pros::delay(1000);
   drive->stop();
-  deploy(); */
-
-  // 3 block Autonomous
-  // deploy
-  deploy();
-
-  // forward
-
-  // turn 90 degrees left
-
-  // forward 24-ish inches
-
-  //
 }
 
 /**
@@ -65,13 +50,66 @@ possible (Should aim for all 4)
 */
 void smallBlue()
 {
+  // Move forward to deploy anti-tips
+  // Move intakes out to deploy ramp
+  deploy();
+
+  // Sweep 4 blocks in front of robot
+  traySetTarget(0);
+  intakesMove(12700);
+  drive->moveDistance(40_in);
+
+  // Backup to stacking area
+  drive->moveDistance(-30_in);
+  // Turn towards goal zone
+  drive->turnAngle(-135_deg);
+  // Stop intakes for stability
+  intakesMove(0);
+
+  // Move towards goalzone
+  drive->moveDistanceAsync(16_in);
+  pros::delay(1280);
+  // Stop drive to prevent messing with voltage control
+  drive->stop();
+
+  // Stacking
+  // Move intakes out for block to stay stable on ground
+  intakesMove(-4800);
+  // Move tray to vertical position
+  traySetTarget(840);
+  pros::delay(960);
+  // Move intakes in for bottom block to align with stack
+  intakesMove(4800);
+  pros::delay(1280);
+  // Move tray back to back up
+  traySetTarget(0);
+
+  // Backup from stack and move intakes out
+  DriveL.moveVoltage(-4800);
+  DriveR.moveVoltage(-4800);
+  intakesMove(-5600);
+  pros::delay(2000);
+
+  // Stop everything
+  DriveL.moveVoltage(0);
+  DriveR.moveVoltage(0);
+  intakesMove(0);
+}
+
+/**
+Autonomous routine for the red corner near the small zone
+Should start facing the second row from the small zone (one cube stacked)
+(Does the same thing as the small blue version)
+*/
+void smallRed()
+{
   deploy();
 
   traySetTarget(0);
   intakesMove(12700);
   drive->moveDistance(40_in);
   drive->moveDistance(-30_in);
-  drive->turnAngle(-135_deg);
+  drive->turnAngle(135_deg);
   intakesMove(0);
 
   drive->moveDistanceAsync(16_in);
@@ -87,41 +125,9 @@ void smallBlue()
 
   DriveL.moveVoltage(-4800);
   DriveR.moveVoltage(-4800);
-  intakesMove(-4800);
+  intakesMove(-5600);
   pros::delay(2000);
   DriveL.moveVoltage(0);
   DriveR.moveVoltage(0);
   intakesMove(0);
-}
-
-/**
-Autonomous routine for the red corner near the small zone
-Should start facing the second row from the small zone (one cube stacked)
-(Does the same thing as the small blue version)
-*/
-void smallRed()
-{
-  deploy();
-
-  intakesMove(12700);
-  drive->moveDistance(40_in);
-  pros::delay(500);
-  drive->turnAngleAsync(146_deg);
-  pros::delay(2000);
-  intakesMove(0);
-
-  drive->moveDistanceAsync(30.5_in);
-  intakesMoveVel(-20);
-  pros::delay(1400);
-
-  // stacking
-
-  traySetTarget(600);
-  pros::delay(3150);
-
-  // backing out
-
-  intakesMoveVel(-20);
-  drive->moveDistanceAsync(-10_in);
-  pros::delay(1800);
 }
